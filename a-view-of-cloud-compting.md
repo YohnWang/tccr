@@ -28,10 +28,7 @@
 >
 > The ability to pay for use of computing resources on a short-term basis as needed (for example, processors by the hour and storage by the day) and release them as needed, thereby rewarding conservation by letting machines and storage go when they are no longer useful.
 
-从硬件配置和定价的角度来看，云计算中有三个方面是新的。
-无限计算资源的出现可按需提供，足以快速跟踪负载激增，从而消除了云计算用户远程规划供应的需求。
-消除云用户的前期承诺，从而允许公司只有在需求增加时才能从小规模开始并增加硬件资源。
-能够根据需要在短期内支付使用计算资源的费用（例如，按小时处理的处理器和按天存储的费用）并根据需要发布它们，从而通过让机器和存储在不存在时进行保护来奖励保护 更长的用处。
+从硬件配置和定价的角度来看，云计算中有三个方面是新的。无限计算资源的出现可按需提供，足以快速跟踪负载激增，从而消除了云计算用户远程规划供应的需求。消除云用户的前期承诺，从而允许公司只有在需求增加时才能从小规模开始并增加硬件资源。能够根据需要在短期内支付使用计算资源的费用（例如，按小时处理的处理器和按天存储的费用）并根据需要发布它们，从而通过让机器和存储在不存在时进行保护来奖励保护 更长的用处。
 
 > We argue that the construction and operation of extremely large-scale, commodity-computer data centers at low-cost locations was the key necessary enabler of cloud computing, for they uncovered the factors of 5 to 7 decrease in cost of electricity, network bandwidth, operations, software, and hardware available at these very large economies of scale. These factors, combined with statistical multiplexing to increase utilization compared to traditional data centers, meant that cloud computing could offer services below the costs of a medium-sized data center and yet still make a good profit.
 
@@ -52,8 +49,7 @@
 > Any application needs a model of computation, a model of storage, and a model of communication. The statistical multiplexing necessary to achieve elasticity and the appearance of infinite capacity available on demand requires automatic allocation and management.
 > In practice, this is done with virtualization of some sort. Our view is that different utility computing offerings will be distinguished based on the cloud system software’s level of abstraction and the level of management of the resources.
 
-任何应用程序都需要计算模型，存储模型和通信模型。实现弹性所需的统计多路复用和按需可用的无限容量的出现需要自动分配和管理。
-实际上，这是通过某种虚拟化来完成的。我们的观点是，将根据云系统软件的抽象级别和资源管理级别来区分不同的效用计算产品。
+任何应用程序都需要计算模型，存储模型和通信模型。实现弹性所需的统计多路复用和按需可用的无限容量的出现需要自动分配和管理。实际上，这是通过某种虚拟化来完成的。我们的观点是，将根据云系统软件的抽象级别和资源管理级别来区分不同的效用计算产品。
 
 > Amazon EC2 is at one end of the spectrum. An EC2 instance looks much like physical hardware, and users can control nearly the entire software stack, from the kernel upward. This low level makes it inherently difficult for Amazon to offer automatic scalability and failover because the semantics associated with replication and other state management issues are highly application-dependent. At the other extreme of the spectrum are application domain-specific platforms such as Google AppEngine, which is targeted exclusively at traditional Web applications, enforcing an application structure of clean separation between a stateless computation tier and a stateful storage tier. AppEngine’s impressive automatic scaling and high-availability mechanisms, and the proprietary MegaStore data storage available to AppEngine applications, all rely on these constraints. Applications for Microsoft’s Azure are written using the .NET libraries, and compiled to the Common Language Runtime, a language-independent managed environment. The framework is significantly more flexible than AppEngine’s, but still constrains the user’s choice of storage model and application structure.Thus, Azure is intermediate between application frameworks like AppEngine and hardware virtual machines like EC2.
 
@@ -287,6 +283,7 @@
 > 3. Hardware systems should be designed at the scale of a container (at least a dozen racks), which will be the minimum purchase size. Cost of operation will match performance and cost of purchase in importance, rewarding energy proportionality5 by putting idle portions of the memory, disk, and network into low-power mode. Processors should work well with VMs and flash memory should be added to the memory hierarchy, and LAN switches and WAN routers must improve in bandwidth and cost.
 
 1.应用软件需要快速缩小规模并扩大规模，这是一项新要求。此类软件还需要付费使用许可模式以满足云计算的需求。
-2.基础设施软件必须意识到它不再在裸机上运行，而是在VM上运行。此外，计量和计费需要从一开始就建立起来。
-3.硬件系统应按容器（至少十几个机架）的规模设计，这将是最小购买尺寸。运营成本将重要地匹配性能和购买成本，通过将存储器，磁盘和网络的空闲部分置于低功耗模式来奖励能量比例5。处理器应与VM配合使用，并且应将闪存添加到内存层次结构中，LAN交换机和WAN路由器必须提高带宽和成本。
 
+2.基础设施软件必须意识到它不再在裸机上运行，而是在VM上运行。此外，计量和计费需要从一开始就建立起来。
+
+3.硬件系统应按容器（至少十几个机架）的规模设计，这将是最小购买尺寸。运营成本将重要地匹配性能和购买成本，通过将存储器，磁盘和网络的空闲部分置于低功耗模式来奖励能量比例5。处理器应与VM配合使用，并且应将闪存添加到内存层次结构中，LAN交换机和WAN路由器必须提高带宽和成本。
