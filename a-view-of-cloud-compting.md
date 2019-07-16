@@ -142,3 +142,151 @@
 
 ### Number 3. Data Confidentiality/Auditability
 
+> Despite most companies outsourcing payroll and many companies using external email services to hold sensitive information, security is one of the most often-cited objections to cloud computing; analysts and skeptical companies ask “who would trust their essential data out there somewhere?” There are also requirements for auditability, in the sense of Sarbanes-Oxley and Health and Human Services Health Insurance Portability and Accountability Act (HIPAA) regulations that must be provided for corporate data to be moved to the cloud.
+
+尽管大多数公司外包工资单，许多公司使用外部电子邮件服务来保存敏感信息，但安全性是云计算最常被提及的反对意见之一。分析师和持怀疑态度的公司会问“谁会相信他们的基本数据？”对于必须提供的“萨班斯 - 奥克斯利法案”和“健康与人类服务健康保险流通与责任法案”（HIPAA）规定，还有可审计性要求将公司数据移至云端。
+
+> Cloud users face security threats both from outside and inside the cloud. Many of the security issues involved in protecting clouds from outside threats are similar to those already facing large data centers. In the cloud, however, this responsibility is divided among potentially many parties, including the cloud user, the cloud vendor, and any third-party vendors that users rely on for security-sensitive software or configurations.
+
+云用户面临来自云外部和内部的安全威胁。保护云免受外部威胁所涉及的许多安全问题与已经面临大型数据中心的问题类似。但是，在云中，此责任分为潜在的多方，包括云用户，云供应商以及用户依赖安全敏感软件或配置的任何第三方供应商。
+
+> The cloud user is responsible for application-level security. The cloud provider is responsible for physical security, and likely for enforcing external firewall policies. Security for intermediate layers of the software stack is shared between the user and the operator; the lower the level of abstraction exposed to the user, the more responsibility goes with it. Amazon EC2 users have more technical responsibility (that is, must implement or procure more of the necessary functionality themselves) for their security than do Azure users, who in turn have more responsibilities than AppEngine customers.
+> This user responsibility, in turn, can be outsourced to third parties who sell specialty security services. The homogeneity and standardized interfaces of platforms like EC2 make it possible for a company to offer, say, configuration management or firewall rule analysis as value-added services.
+
+云用户负责应用程序级安全性。云提供商负责物理安全，并可能实施外部防火墙策略。
+软件堆栈的中间层的安全性在用户和操作员之间共享; 暴露给用户的抽象级别越低，其承担的责任就越大。
+与Azure用户相比，Amazon EC2用户对其安全性负有更多的技术责任（即，必须自己实施或获取更多必要的功能），Azure用户反过来比AppEngine客户承担更多责任。反过来，这种用户责任可以外包给销售专业安全服务的第三方。EC2等平台的同质性和标准化接口使公司可以提供配置管理或防火墙规则分析作为增值服务。
+
+> While cloud computing may make external-facing security easier, it does pose the new problem of internalfacing security. Cloud providers must guard against theft or denial-of-service attacks by users. Users need to be protected from one another.
+
+虽然云计算可以使面向外部的安全性变得更容易，但它确实带来了内部安全性的新问题。云提供商必须防止用户遭到盗窃或拒绝服务攻击。用户需要彼此保护。
+
+> The primary security mechanism in today’s clouds is virtualization. It is a powerful defense, and protects against most attempts by users to attack one another or the underlying cloud infrastructure. However, not all resources are virtualized and not all virtualization environments are bug-free. Virtualization software has been known to contain bugs that allow virtualized code to “break loose” to some extent. Incorrect network virtualization may allow user code access to sensitive portions of the provider’s infrastructure, or to the resources of other users. These challenges, though, are similar to those involved in managing large non-cloud data centers, where different applications need to be protected from one another. Any large Internet service will need to ensure that a single security hole doesn’t compromise everything else.
+
+当今云中的主要安全机制是虚拟化。它是一种强大的防御，可以防止用户进行大多数互相攻击或底层云基础架构的攻击。但是，并非所有资源都是虚拟化的，并非所有虚拟化环境都没有错误。众所周知，虚拟化软件包含允许虚拟化代码在某种程度上“破坏”的错误。不正确的网络虚拟化可能允许用户代码访问提供商的基础设施的敏感部分或其他用户的资源。但是，这些挑战与管理大型非云数据中心相关的挑战类似，其中不同的应用程序需要相互保护。任何大型互联网服务都需要确保单个安全漏洞不会影响其他任何漏洞。
+
+> One last security concern is protecting the cloud user against the provider. The provider will by definition control the “bottom layer” of the software stack, which effectively circumvents most known security techniques. Absent radical improvements in security technology, we expect that users will use contracts and courts, rather than clever security engineering, to guard against provider malfeasance. The one important exception is the risk of inadvertent data loss. It’s difficult to imagine Amazon spying on the contents of virtual machine memory; it’s easy to imagine a hard disk being disposed of without being wiped, or a permissions bug making data visible improperly.
+
+最后一个安全问题是保护云用户免受提供商的侵害。根据定义，提供者将控制软件栈的“底层”，这有效地绕过了大多数已知的安全技术。如果没有安全技术的根本改进，我们希望用户将使用合同和法院，而不是聪明的安全工程，以防止提供商的渎职行为。一个重要的例外是无意中丢失数据的风险。很难想象亚马逊会窥探虚拟机内存的内容; 很容易想象一个硬盘在没有被擦除的情况下被丢弃，或者一个权限错误使得数据不正确地被看见。
+
+> This is a problem in non-cloud contexts as well. The standard defense, user-level encryption, is also effective in the cloud. This is already common for high-value data outside the cloud, and both tools and expertise are readily available. This approach was successfully used by TC3, a health care company with access to sensitive patient records and health care claims, when moving their HIPAA-compliant application to AWS.
+
+这也是非云环境中的问题。标准防御，用户级加密在云中也很有效。这对于云外的高价值数据已经很常见，并且工具和专业知识都很容易获得。TC3是一家医疗保健公司，在将符合HIPAA标准的应用程序移至AWS时可以访问敏感的患者记录和医疗保健索赔，成功地使用了这种方法。
+
+> Similarly, auditability could be added as an additional layer beyond the reach of the virtualized guest OS, providing facilities arguably more secure than those built into the applications themselves and centralizing the software responsibilities related to confidentiality and auditability into a single logical layer. Such a new feature reinforces the cloud computing perspective of changing our focus from specific hardware to the virtualized capabilities being provided.
+
+同样，可审计性可以作为虚拟客户操作系统无法覆盖的附加层添加，提供的设施可以说比内置于应用程序本身的设施更安全，并将与机密性和可审计性相关的软件职责集中到一个逻辑层中。这一新功能强化了云计算的视角，即将重点从特定硬件转变为所提供的虚拟化功能。
+
+### Number 4. Data Transfer Bottlenecks
+
+> Applications continue to become more data-intensive. If we assume applications may be “pulled apart” across the boundaries of clouds, this may complicate data placement and transport. At $100 to $150 per terabyte transferred, these costs can quickly add up, making data transfer costs an important issue. Cloud users and cloud providers have to think about the implications of placement and traffic at every level of the system if they want to minimize costs. This kind of reasoning can be seen in Amazon’s development of its new cloudfront service.
+
+应用程序继续变得更加数据密集。如果我们假设应用程序可能跨云层“拉开”，则可能会使数据放置和传输复杂化。每TB转移100至150美元，这些成本可以迅速增加，使数据传输成本成为一个重要问题。如果云用户和云提供商希望最大限度地降低成本，则必须考虑系统各个层面的布局和流量的影响。亚马逊开发新的云端服务可以看出这种推理。
+
+> One opportunity to overcome the high cost of Internet transfers is to ship disks. Jim Gray found the cheapest way to send a lot of data is to ship disks or even whole computers.10 While this does not address every use case, it effectively handles the case of large delay-tolerant point-to-point transfers, such as importing large data sets.
+
+克服互联网传输成本高的一个机会是运送磁盘。Jim Gray发现发送大量数据的最便宜方式是发送磁盘甚至是整台计算机.10虽然这并不能解决每个用例，但它有效地处理了大容量延迟容忍点对点传输的情况，例如：导入大型数据集。
+
+> To quantify the argument, assume that we want to ship 10TB from U.C.Berkeley to Amazon in Seattle, WA. Garfinkel measured bandwidth to S3 from three sites and found an average write bandwidth of 5Mbits/sec to 18Mbits/ sec. Suppose we get 20Mbits/sec over a WAN link. It would take
+>
+> 10 * 1012 Bytes / (20×106 bits/second) = (8×1013)/(2×107) seconds = 4,000,000 seconds,
+>
+> which is more than 45 days. If we instead sent 10 1TB disks via overnight shipping, it would take less than a day to transfer 10TB, yielding an effective bandwidth of about 1,500Mbit/sec. For example, AWS8 recently started offering such a service, called Import/Export.
+
+为了量化这个论点，假设我们想要从华盛顿州西雅图的U.C.Berkeley运送10TB到亚马逊。Garfinkel从三个站点测量到S3的带宽，发现平均写入带宽为5Mbits / sec到18Mbits / sec。假设我们通过WAN链路获得20Mbits / sec。它需要10 * 1012字节/（20×106位/秒）=（8×1013）/（2×107）秒= 4,000,000秒，这超过45天。如果我们通过隔夜发货发送10个1TB磁盘，那么转移10TB将花费不到一天的时间，产生大约1,500Mbit /秒的有效带宽。例如，AWS8最近开始提供名为Import / Export的服务。
+
+### Number 5. Performance Unpredictability
+> Our experience is that multiple virtual machines (VMs) can share CPUs and main memory surprisingly well in cloud computing, but that network and disk I/O sharing is more problematic.
+> As a result, different EC2 instances vary more in their I/O performance than in main memory performance. We measured 75 EC2 instances running the STREAM memory benchmark.14 The mean bandwidth is 1,355Mbytes/ sec., with a standard deviation across instances of just 52MBytes/sec, less than or about 4% of the mean. We also measured the average disk bandwidth for 75 EC2 instances each writing 1GB files to local disk. The mean disk write bandwidth is nearly 55Mbytes per second with a standard deviation across instances of a little over 9MBytes/sec, or about 16% of the mean. This demonstrates the problem of I/O interference between virtual machines.
+
+我们的经验是，多个虚拟机（VM）可以在云计算中出色地共享CPU和主内存，但网络和磁盘I / O共享更成问题。
+因此，不同的EC2实例的I/O性能差异大于主内存性能。我们测量了运行STREAM内存基准测试的75个EC2实例.14平均带宽为1,355Mbytes/sec。实例的标准偏差仅为52MBytes/sec，小于或约为平均值的4％。我们还测量了每个将1GB文件写入本地磁盘的75个EC2实例的平均磁盘带宽。平均磁盘写入带宽接近每秒55M字节，跨越实例的标准偏差略高于9MBytes/sec，或约为平均值的16％。这表明虚拟机之间的I/O干扰问题。
+
+> One opportunity is to improve architectures and operating systems to efficiently virtualize interrupts and I/O channels. Note that IBM mainframes and operating systems largely overcame these problems in the 1980s, so we have successful examples from which to learn.
+
+一个机会是改进体系结构和操作系统，以有效地虚拟化中断和I/O通道。请注意，IBM大型机和操作系统在20世纪80年代基本上克服了这些问题，因此我们有成功的示例可供学习。
+
+> Another possibility is that flash memory will decrease I/O interference. Flash is semiconductor memory that preserves information when powered off like mechanical hard disks, but since it has no moving parts, it is much faster to access (microseconds vs. milliseconds) and uses less energy. Flash memory can sustain many more I/Os per second per gigabyte of storage than disks, so multiple virtual machines with conflicting random I/O workloads could coexist better on the same physical computer without the interference we see with mechanical disks.
+
+另一种可能性是闪存会降低I/O干扰。闪存是半导体存储器，可以像机械硬盘一样在断电时保存信息，但由于它没有移动部件，因此访问速度要快得多（微秒与毫秒）并且耗电量更少。与磁盘相比，闪存每GB每秒可以承受更多的I/O，因此具有冲突的随机I/O工作负载的多个虚拟机可以在同一台物理计算机上更好地共存，而不会受到机械磁盘的干扰。
+
+> Another unpredictability obstacle concerns the scheduling of virtual machines for some classes of batch processing programs, specifically for highperformance computing. Given that high-performance computing (HPC) is used to justify government purchases of $100M supercomputer centers with 10,000 to 1,000,000 processors, there are many tasks with parallelism that can benefit from elastic computing. Today, many of these tasks are run on small clusters, which are often poorly utilized. There could be a significant savings in running these tasks on large clusters in the cloud instead. Cost associativity means there is no cost penalty for using 20 times as much computing for 1/20th the time. Potential applications that could benefit include those with very high potential financial returns—financial analysis, petroleum exploration, movie animation—that would value a 20x speedup even if there were a cost premium.
+
+另外，不可预测性障碍涉及某些类批处理程序的虚拟机调度，特别是高性能计算。鉴于高性能计算（HPC）用于证明政府购买价值1亿至1,000,000台处理器的1亿美元超级计算机中心是合理的，因此有许多并行的任务可以从弹性计算中受益。今天，许多这些任务都是在小型集群上运行的，这些集群往往利用率很低。相反，在云中的大型集群上运行这些任务可能会有很大的节省。成本关联意味着在1/20的时间内使用20倍的计算没有成本损失。可能受益的潜在应用包括具有非常高的潜在财务回报的应用 - 财务分析，石油勘探，电影动画 - 即使存在成本溢价，也将重视20倍的加速。
+
+> The obstacle to attracting HPC is not the use of clusters; most parallel computing today is done in large clusters using the message-passing interface MPI. The problem is that many HPC applications need to ensure that all the threads of a program are running simultaneously, and today’s virtual machines and operating systems do not provide a programmer-visible way to ensure this. Thus, the opportunity to overcome this obstacle is to offer something like “gang scheduling” for cloud computing. The relatively tight timing coordination expected in traditional gang scheduling may be challenging to achieve in a cloud computing environment due to the performance unpredictability just described.
+
+吸引HPC的障碍不是使用集群;今天的大多数并行计算是使用消息传递接口MPI在大型集群中完成的。问题是许多HPC应用程序需要确保程序的所有线程同时运行，而今天的虚拟机和操作系统不提供程序员可见的方式来确保这一点。因此，克服这一障碍的机会是为云计算提供类似“群组调度”的东西。由于刚刚描述的性能不可预测性，在传统群组调度中预期的相对紧密的定时协调可能难以在云计算环境中实现。
+
+### Number 6: Scalable Storage
+
+> Earlier, we identified three properties whose combination gives cloud computing its appeal: short-term usage (which implies scaling down as well as up when demand drops), no upfront cost, and infinite capacity on demand. While it’s straightforward what this means when applied to computation, it’s less clear how to apply it to persistent storage.
+
+早些时候，我们确定了三个属性，它们的组合为云计算带来了吸引力：短期使用（这意味着在需求下降时缩小和向上），没有前期成本和无限的按需容量。虽然这在应用于计算时意味着什么，但是如何将其应用于持久存储却不太清楚。
+
+> There have been many attempts to answer this question, varying in the richness of the query and storage API’s, the performance guarantees offered, and the resulting consistency semantics. The opportunity, which is still an open research problem, is to create a storage system that would not only meet existing programmer expectations in regard to durability, high availability, and the ability to manage and query data, but combine them with the cloud advantages of scaling arbitrarily up and down on demand.
+
+已经有很多尝试回答这个问题，不同的是查询和存储API的丰富性，提供的性能保证以及由此产生的一致性语义。这个仍然是一个开放性研究问题的机会是创建一个存储系统，它不仅能够满足现有程序员对耐用性，高可用性以及管理和查询数据的能力的期望，还能将它们与云的优势结合起来。根据需要随意上下缩放。
+
+### Number 7: Bugs in LargeScale Distributed Systems
+
+> One of the difficult challenges in cloud computing is removing errors in these very large-scale distributed systems. A common occurrence is that these bugs cannot be reproduced in smaller configurations, so the debugging must occur at scale in the production data centers.
+
+云计算面临的一个难题是消除这些超大规模分布式系统中的错误。常见的情况是这些错误无法以较小的配置再现，因此调试必须在生产数据中心大规模进行。
+
+> One opportunity may be the reliance on virtual machines in cloud computing. Many traditional SaaS providers developed their infrastructure without using VMs, either because they preceded the recent popularity of VMs or because they felt they could not afford the performance hit of VMs. Since VMs are de rigueur in utility computing, that level of virtualization may make it possible to capture valuable information in ways that are implausible without VMs.
+
+一个机会可能是依赖云计算中的虚拟机。许多传统的SaaS提供商在不使用虚拟机的情况下开发了他们的基础设施，要么是因为他们先于最近流行的虚拟机，要么是因为他们认为他们无法承受虚拟机的性能损失。由于VM在公用计算中是必需的，因此该级别的虚拟化可以以不具有VM的方式难以接收的方式捕获有价值的信息。
+
+### Number 8: Scaling Quickly
+
+> Pay-as-you-go certainly applies to storage and to network bandwidth, both of which count bytes used. Computation is slightly different, depending on the virtualization level. Google AppEngine automatically scales in response to load increases and decreases, and users are charged by the cycles used. AWS charges by the hour for the number of instances you occupy, even if your machine is idle.
+
+即用即付肯定适用于存储和网络带宽，两者都计算使用的字节数。计算略有不同，具体取决于虚拟化级别。Google AppEngine会根据负载的增加和减少自动进行扩展，并根据使用的周期向用户收费。即使您的计算机处于空闲状态，AWS也会按小时收取您占用的实例数。
+
+> The opportunity is then to automatically scale quickly up and down in response to load in order to save money, but without violating servicelevel agreements. Indeed, one focus of the UC Berkeley Reliable Adaptive Distributed Systems Laboratory is the pervasive and aggressive use of statistical machine learning as a diagnostic and predictive tool to allow dynamic scaling, automatic reaction to performance and correctness problems, and automatically managing many other aspects of these systems.
+
+然后，有机会根据负载自动快速上下调整以节省资金，但不违反服务级别协议。实际上，加州大学伯克利分校可靠自适应分布式系统实验室的一个重点是普及和积极地使用统计机器学习作为诊断和预测工具，以允许动态扩展，自动响应性能和正确性问题，并自动管理这些的许多其他方面系统。
+
+> Another reason for scaling is to conserve resources as well as money. Since an idle computer uses about two-thirds of the power of a busy computer, careful use of resources could reduce the impact of data centers on the environment, which is currently receiving a great deal of negative attention. Cloud computing providers already perform careful and low-overhead accounting of resource consumption. By imposing fine-grained costs, utility computing encourages programmers to pay attention to efficiency (that is, releasing and acquiring resources only when necessary), and allows more direct measurement of operational and development inefficiencies. 
+
+扩展的另一个原因是节省资源和资金。由于空闲计算机使用繁忙计算机大约三分之二的功率，因此小心使用资源可以减少数据中心对环境的影响，而环境目前正受到很大的负面关注。云计算提供商已经对资源消耗进行了谨慎且低开销的计算。通过实施细粒度成本，效用计算鼓励程序员关注效率（即仅在必要时释放和获取资源），并允许更直接地测量操作和开发效率低下。
+
+> Being aware of costs is the first step to conservation, but configuration hassles make it tempting to leave machines idle overnight so that startup time is zero when developers return to work the next day. A fast and easy-to-use snapshot/restart tool might further encourage conservation of computing resources.
+
+了解成本是保护的第一步，但是配置麻烦使得机器一夜之间保持闲置，以便当开发人员第二天重返工作岗位时，启动时间为零。快速且易于使用的快照/重启工具可能进一步鼓励保护计算资源。
+
+### Number 9: Reputation Fate Sharing
+
+> One customer’s bad behavior can affect the reputation of others using the same cloud. For instance, blacklisting of EC2 IP addresses by spam-prevention services may limit which applications can be effectively hosted. An opportunity would be to create reputation-guarding services similar to the “trusted email” services currently offered (for a fee) to services hosted on smaller ISP’s, which experience a microcosm of this problem.
+
+一个客户的不良行为可能会影响使用同一个云的其他人的声誉。例如，通过垃圾邮件防护服务将EC2 IP地址列入黑名单可能会限制哪些应用程序可以有效托管。一个机会是创建声誉保护服务，类似于当前提供的“可信电子邮件”服务（收费）到小型ISP托管的服务，这些服务经历了这个问题的一个缩影。
+
+> Another legal issue is the question of transfer of legal liability—cloud computing providers would want customers to be liable and not them (such as, the company sending the spam should be held liable, not Amazon). In March 2009, the FBI raided a Dallas data center because a company whose services were hosted there was being investigated for possible criminal activity, but a number of “innocent bystander” companies hosted in the same facility suffered days of unexpected downtime, and some went out of business.
+
+另一个法律问题是转移法律责任的问题 - 云计算提供商希望客户承担责任而不是他们（例如，发送垃圾邮件的公司应该承担责任，而不是亚马逊）。2009年3月，联邦调查局袭击了达拉斯数据中心，因为在那里托管服务的公司正在接受可能的犯罪活动调查，但在同一设施中托管的一些“无辜的旁观者”公司遭遇了数天的意外停机，有些人破产。
+
+### Number 10: Software Licensing 
+
+> Current software licenses commonly restrict the computers on which the software can run. Users pay for the software and then pay an annual maintenance fee. Indeed, SAP announced that it would increase its annual maintenance fee to at least 22% of the purchase price of the software, which is close to Oracle’s pricing. Hence, many cloud computing providers originally relied on open source software in part because the licensing model for commercial software is not a good match to utility computing.
+
+当前的软件许可证通常会限制运行该软件的计算机。用户支付软件费用，然后支付年度维护费。事实上，SAP宣布将其年度维护费用增加至至少22％的软件购买价格，这接近甲骨文的定价。因此，许多云计算提供商最初依赖于开源软件，部分原因是商业软件的许可模式与效用计算不匹配。
+
+> The primary opportunity is either for open source to remain popular or simply for commercial software companies to change their licensing structure to better fit cloud computing. For example, Microsoft and Amazon now offer pay-as-you-go software licensing for Windows Server and Windows SQL Server on EC2. An EC2 instance running Microsoft Windows costs $0.15 per hour instead of $0.10 per hour for the open source alternative. IBM also announced pay-as-you-go pricing for hosted IBM software in conjunction with EC2, at prices ranging from $0.38 per hour for DB2 Express to $6.39 per hour for IBM WebSphere with Lotus Web Content Management Server.
+
+主要机会是开源保持流行，或者仅仅是商业软件公司改变其许可结构以更好地适应云计算。例如，微软和亚马逊现在为EC2上的Windows Server和Windows SQL Server提供即用即付软件许可。运行Microsoft Windows的EC2实例每小时收费0.15美元，而开源替代方案每小时收费0.10美元。IBM还宣布与EC2一起托管IBM软件的按需付费定价，价格从DB2 Express每小时0.38美元到IBM WebSphere with Lotus Web Content Management Server每小时6.39美元不等。
+
+## Conclusion
+
+> We predict cloud computing will grow, so developers should take it into account. Regardless of whether a cloud provider sells services at a low level of abstraction like EC2 or a higher level like AppEngine, we believe computing, storage, and networking must all focus on horizontal scalability of virtualized resources rather than on single node performance. Moreover:
+
+我们预测云计算将会增长，因此开发人员应将其考虑在内。无论云提供商是以低级抽象（如EC2）还是更高级别（如AppEngine）销售服务，我们都认为计算，存储和网络都必须关注虚拟化资源的水平可扩展性，而不是单节点性能。此外： 
+
+> 1. Applications software needs to both scale down rapidly as well as scale up, which is a new requirement. Such software also needs a pay-for-use licensing model to match needs of cloud computing.
+> 2. Infrastructure software must be aware that it is no longer running on bare metal but on VMs. Moreover, metering and billing need to be built in from the start.
+> 3. Hardware systems should be designed at the scale of a container (at least a dozen racks), which will be the minimum purchase size. Cost of operation will match performance and cost of purchase in importance, rewarding energy proportionality5 by putting idle portions of the memory, disk, and network into low-power mode. Processors should work well with VMs and flash memory should be added to the memory hierarchy, and LAN switches and WAN routers must improve in bandwidth and cost.
+
+1.应用软件需要快速缩小规模并扩大规模，这是一项新要求。此类软件还需要付费使用许可模式以满足云计算的需求。
+2.基础设施软件必须意识到它不再在裸机上运行，而是在VM上运行。此外，计量和计费需要从一开始就建立起来。
+3.硬件系统应按容器（至少十几个机架）的规模设计，这将是最小购买尺寸。运营成本将重要地匹配性能和购买成本，通过将存储器，磁盘和网络的空闲部分置于低功耗模式来奖励能量比例5。处理器应与VM配合使用，并且应将闪存添加到内存层次结构中，LAN交换机和WAN路由器必须提高带宽和成本。
+
