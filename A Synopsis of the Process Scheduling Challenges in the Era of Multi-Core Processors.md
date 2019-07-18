@@ -79,6 +79,8 @@ D.多核调度
 由进程调度程序分配给每个任务的相当大的CPU时间实质上不会转化为共享资源的有效和公平使用。
 进程调度程序之前的主要挑战是识别和预测每个任务的资源需求，并以最小化共享资源争用，最大化共享资源利用率以及利用核心之间共享资源的优势的方式对其进行调度。
 
+![fig1](https://github.com/YohnWang/tccr/blob/master/resource/A%20Synopsis%20of%20the%20Process%20Scheduling%20Challenges%20in%20the%20Era%20of%20Multi-Core%20Processors/fig1.png)
+
 ## IV. OUTCOMES
 
 > The authors conducted experiments by running different workloads in multiple scenarios. These are narrated in the following lines.
@@ -132,6 +134,9 @@ B.任务组调度。
 
 作者表示，在Symmetric Multiprocessing（SMP）域中，Linux内核调度程序在可用的最后一级缓存中均匀分配正在运行的任务。为了验证，他们考虑使用具有Intel®Core2四核处理器和四个运行任务的双处理器封装SMP平台。Linux进程调度程序将这四个任务分布在系统中可用的四个L2高速缓存中，如图2所示。这样可以最大限度地提高资源利用率并最大限度地减少资源争用，从而在以前描述的工作负载上进行测试时提供最佳性能。该研究表明，Linux内核提供了一个可由管理员设置的可调参数。
 设置此可调参数后，进程调度程序将首先尝试加载包中的所有逻辑线程和核心，然后再将负载分发到另一个包。该策略称为节电策略，可提供最佳节能效果。例如，当作者在具有节能可调谐集的双封装SMP平台英特尔酷睿2四核处理器上运行相同的四任务场景时，所有四个任务都在驻留在单个封装中的四个核上运行，如图所示图3。
+
+![fig2](https://github.com/YohnWang/tccr/blob/master/resource/A%20Synopsis%20of%20the%20Process%20Scheduling%20Challenges%20in%20the%20Era%20of%20Multi-Core%20Processors/fig2.png)
+![fig3](https://github.com/YohnWang/tccr/blob/master/resource/A%20Synopsis%20of%20the%20Process%20Scheduling%20Challenges%20in%20the%20Era%20of%20Multi-Core%20Processors/fig3.png)
 
 ##  VI. FUTURE SCHEDULING CHALLENGES
 
