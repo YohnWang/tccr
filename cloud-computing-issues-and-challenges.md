@@ -216,7 +216,7 @@ Grid致力于实现最大化计算。云是按需计算 - 在扩展和上下扩�
 
 由于云计算仍处于起步阶段，目前的采用与众多挑战相关。根据IDC在2008年进行的一项调查，阻止云计算被采用的主要挑战得到了组织的认可，如图1所示。
 
-![figure1](https://github.com/YohnWang/tccr/blob/master/resource/cloud-computing-issues-and-challenges/figure1.png)
+![figure1](./resource/cloud-computing-issues-and-challenges/figure1.png)
 
 **A.安全**
 

@@ -130,5 +130,78 @@ TAP不断进行在线监控和测量，以跟踪云系统的状态，包括资�
 
 ![figure1](https://github.com/YohnWang/tccr/blob/master/resource/adaptive-dispatching-of-tasks-in-the-cloud/figure1.png)
 
+![figure1](./resource/adaptive-dispatching-of-tasks-in-the-cloud/figure1.png)
+
 *图1.显示任务分配平台的系统架构，该平台由接收和分派作业的特定计算机托管，并与安装在执行作业的每台主机上的测量系统（右侧）交互。TAP使用 SP，DP和 ACK与主机上的每个测量系统进行通信，如文中所示。*
+
+### 4.1 Probabilistic Task Allocation Schemes
+
+> The schemes (b), (c), and (e) described in Section 3.1 are examples of probabilistic task allocation schemes. In these schemes, when a task arrives from some user or source outside the Cloud system, TAP decides to allocate it to some host i among the N possible hosts with probability pi so that at decision time when the task must be allocated:
+>
+> - TAP first calculates $p_i$ for each of the hosts $i$, 
+> - Then TAP uses these probabilities to actually select the host that will receive the task.
+>
+> In the case of (b) we obviously have $p_i=1/N$.
+>
+> Probabilistic schemes have the advantage that a host which is being preferred because, say it is providing better service, is not systematically overloaded by repeated allocation since the QoS it offers is only used probabilistically to make a task allocation. In other words, the chance that a given server receives two successive tasks is very small as compared to the case where successive tasks are allocated to distinct servers.
+>
+> In addition to (b), we experiment with two distinct schemes to calculate $p_i$, Model Based Allocation (c) and Sensible Routing (e).
+
+第3.1节中描述的方案（b），（c）和（e）是概率任务分配方案的示例。在这些方案中，当任务从云系统外部的某个用户或来源到达时，TAP决定以概率$p_i$将其分配给$N$个可能主机中的某个主机$i$，以便在决策时必须分配任务：
+
+- TAP首先为每个主机$i$计算$p_i$，
+
+- 然后TAP使用这些概率来实际选择将接收任务的主机。
+
+在（b）的情况下，我们显然有$p_i=1/N$.
+
+概率方案的优点在于，能提供更好的服务而被优选的主机不会被重复分配，从而导致系统过载，因为它提供的QoS仅在概率上用于进行任务分配。换句话说，与将连续任务分配给不同服务器的情况相比，给定服务器接收两个连续任务的机会非常小。
+
+除了（b）之外，我们还尝试了两种不同的方案来计算 $p_i$，基于模型的分配（c）和合理路由（e）。
+
+
+#### 4.1.1 Model Based Task Allocation
+
+> Model Based Allocation (c) uses a mathematical model to predict the estimated performance at a host in order to make a randomised task allocation. This has been used in earlier work concerning task allocation schemes that help reduce the overall energy consumed in a system [8]. In this approach, if $W_{i}\left(\lambda, p_{i}\right)$  is the relevant QoS metric obtained for host $i$ by allocating a randomised fraction pi of tasks to host $i$ when the overall arrival rate of tasks to TAP is $\lambda$, then the allocation probabilities $p_1,..., p_N$ are chosen so as to minimise the overall average QoS metric:
+> $$
+> W=\sum_{i=1}^{N} p_{i} W_{i}\left(\lambda, p_{i}\right)
+> $$
+>
+> At first glance, since each host $i$ is a multiple-core machine with $C_i$ cores, a simple mathematical model that can be used to compute, say the QoS metric “response time” $W_{i}\left(\lambda, p_{i}\right)$ that host $i$ provides, assuming that there are no main memory limitations and no interference among processors (for instance for memory or disk access), is the $M/M/C_i$ queueing model [38], i.e. with Poisson arrivals, exponential service times, and $C_i$ servers. Of course, both the Poisson arrival and the exponential service time assumptions are simplifications of reality, and more detailed and precise models are also possible for instance using diffusion approximations [39] but would require greater computational effort and more measurement data.
+>
+> However, a set of simple experiments we have conducted show that the $M/M/K$ model for each host would not correspond to reality. Indeed, in Fig. 2 we report the measured completion rate of tasks on a host (y-axis) relative to the execution time for a single task running by itself, as a function of the number of simultaneously running tasks (x-axis). These measurements were conducted on a single host (Host 1), and for a single task running on the system, the average task processing time was 64.1 ms.
+
+
+基于模型的分配（c）使用数学模型来预测主机的估计性能，以便进行随机任务分配。这已经用于早期有关任务分配方案的工作中，这有助于减少系统中的总能量消耗[8]。在这种方法中，如果$W_{i}\left(\lambda, p_{i}\right)$是主机$ i $获得的相关QoS度量，通过将任意的随机分数pi分配给主机$ i $任务到TAP的总体到达率是$ \ lambda $，然后选择分配概率$ p_1，...，p_N $以便最小化整体平均QoS度量：
+
+$$
+W=\sum_{i=1}^{N} p_{i} W_{i}\left(\lambda, p_{i}\right)
+$$
+
+乍一看，由于每台主机$ i $都是一台带有$ C_i $核心的多核机器，这是一个可以用来计算的简单数学模型，比如QoS指标“响应时间$ W_ {i} \left(\lambda，p_ {i} \right)$主机$ i $提供，假设没有主内存限制且处理器之间没有干扰（例如内存或磁盘访问），是$ M / M / C_i $排队模型[38]，即Poisson到达，指数服务时间和$ C_i $服务器。当然，泊松到达和指数服务时间假设都是现实的简化，例如使用扩散近似[39]也可能有更详细和精确的模型，但需要更多的计算工作量和更多的测量数据。
+
+然而，我们进行的一系列简单实验表明，每个主机的$ M / M / K $模型与现实不符。实际上，在图2中，我们报告了主机上任务的测量完成率（y轴）相对于自身运行的单个任务的执行时间，作为同时运行的任务数量（x轴）的函数。这些测量在单个主机（主机1）上进行，对于在系统上运行的单个任务，平均任务处理时间为64.1毫秒。
+
+> If this were a perfectly running ideal parallel processing system, we could observe something close to a linear increase in the completion rate of tasks (red dots) when the number of simultaneously running tasks increases, until the number of cores in the machine $C_1$ have been reached. However the measurements shown in Fig. 2 indicate (blue dots) a significant increase in completion rate as the number of tasks goes from 1 to 2, but then the rate remains constant, which reveals that there may be significant interference between tasks due to competition for resources. Indeed, if we call $\gamma\left(l\right)$ the average completion rate per task, we observed the following values for $\gamma_i\left( l \right) / \gamma_i\left( 1 \right)$ for $l = 2,...10$ computed to two decimal digits: 0.67, 0.48, 0.34,  0.29, 0.23, 0.20, 0.17, 0.15, 0.13. From this data, a linear regression estimate was then computed for the average execution time $\mu(i)^{-1}$ when there are $l$ tasks running simultaneously, as shown on Fig. 3, yielding a quasi-linear increase. As a result we can quite accurately use the estimate $l . \gamma(l) / \gamma(1) \approx 1.386$. Based on this measured data, we model the distribution of the number of tasks in a host server $i$ as a random walk on the non-negative integers, where:
+>
+> - $l=0$ represents the empty host (i.e. with zero tasks at the host),
+> - The transition rate from any state $l\ge0$ to state $l+1$ is the arrival rate of tasks to the host $\lambda_i$,
+> - The transition rate from state 1 to state 0 is the $\mu_{i}(1)=T_{i}^{-1}$ where $T_i$ is the average execution time of a task (by itself) on the host,
+> - The transition rate from state $l+1$ to state l if $l\ge1$ is quasi constant given by $\mu_{i 0} \equiv(l . \gamma(l) / \gamma(1)) \mu_{i}(1)$
+> - The arrival rate of tasks to Host $i$ is $\lambda_{i}=p_{i}^{m} \lambda$ where $p_{i}^{m}$ is the probability with which TAP using the model based algorithm assigns tasks to Host $i$, and $ \lambda $ is the overall arrival rate of tasks to TAP.
+>
+> The probability that there are $l$ tasks at Host $i$ in steady-state is then:
+> $$
+> \begin{aligned} p_{i}(1) &=p_{i}(0) \frac{\lambda_{i}}{\mu_{i}(1)}, p_{i}(l)=\left(\frac{\lambda_{i}}{\mu_{i 0}}\right)^{l-1} p_{i}(1), l>1 , \\ p_{i}(0) &=\frac{1-\frac{\lambda_{i}}{\mu_{i 0}}}{1+\lambda_{i} \frac{\mu_{i 0}-\mu_{i}(1)}{\mu_{i 0} \mu_{i}(1)}} \end{aligned}
+> $$
+>
+> Using Little’s formula [38] the overall average response times that we wish to minimise, by choosing the $p^m_i$ for a given $ \lambda $ is:
+> $$
+> W^{m}=\sum_{i=1}^{N} \frac{p_{i}^{m}}{\mu_{i}(1)} \frac{p_{i}(0)}{\left(1-\frac{\lambda_{i}}{\mu_{i 0}}\right)^{2}}
+> $$
+> The appropriate values of the $p^m_i$ for a given system and a given arrival rate $ \lambda $  can be then obtained numerically.
+>
+> To illustrate this approach for the specific service time data regarding the three hosts that we use, in Fig. 4 we show the variation of the average task response time with different combinations of $\left[\lambda_{1}, \lambda_{2}, \lambda_{3}\right]$, when $ \lambda=20\ task/sec $.
+
+如果这是一个完美运行的理想并行处理系统，当同时运行的任务数量增加时，我们可以观察到任务完成率（红点）接近线性增加，直到机器中的核心数量为$ C_1 $已达到。然而，图2中所示的测量结果表明（蓝点）完成率随着任务数量从1增加到2而显着增加，但随后速率保持不变，这表明由于竞争而导致任务之间可能存在显着干扰对于资源。实际上，如果我们将称$\gamma\left(l\right)$为每个任务的平均完成率，我们会观察的以$\gamma_i\left( l \right) / \gamma_i\left( 1 \right)$下值对于$ l = 2，... 10 $计算为两位小数：0.67,0.48,0.34,0.29,0.23,0.20,0.17,0.15,0.13。根据这些数据，当有$ l $任务同时运行时，计算平均执行时间$\mu(i)^{-1}$的线性回归估计，如图3所示，产生准线性增加。因此，我们可以非常准确地使用估计$ l. \gamma(l) / \gamma(1) \approx 1.386 $。根据这些测量数据，我们模拟主机服务器$ i $中任务数量的分布，作为非负整数的随机游走，其中：
 
