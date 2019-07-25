@@ -325,4 +325,36 @@ $$
 TAP然后会使用 $q_i$, $i=1,\dots,N$ 来分配，所以任务会被分配到对应的$q_i$值最大的主机$i$上。一开始，将以相同的概率选择任何一个主机。然而，随着权重的连续更新，这将被改变，以便TAP选择“更好”的主机，即$G$更小的那个。
 
 当TAP收到目标函数$G_i^t$的值，即主机$i$在时刻$t$被测量的那个，并且$\frac{1}{G_i^t}$被当成“奖励”，以便RNN的权重如下进行更新：
+$$
+\begin{array}{l}{w^{+}(j, i) \leftarrow w^{+}(j, i)+\frac{1}{G_{i}^{t}}} \\ {w^{-}(j, k) \leftarrow w^{-}(j, k)+\frac{1}{G_{i}^{t}(N-2)}, \quad \text { if } k \neq i} \\ {\text { else if } G_{i}^{t}>T} \\ {w^{+}(j, k) \leftarrow ; w^{+}(j, k)+\frac{1}{G_{i}^{t}(N-2)}, \quad \text { if } k \neq i} \\ {w^{-}(j, i) \leftarrow w^{-}(i, j)+\frac{1}{G_{i}^{t}}}\end{array}
+$$
 
+> We compute $r^{*}(i)=\sum_{k=1}^{N}\left[w^{+}(i, k)+w^{-}(i, k)\right]$ for all $i$ and renormalise all weights so that their values do not grow indefinitely:
+> $$
+> w^{+}(i, k) \leftarrow \frac{r(i)}{r^{*}(i)} w^{+}(i, k), w^{-}(i, k) \leftarrow \frac{r(i)}{r^{*}(i)} w^{-}(i, k)
+> $$
+> 
+
+我们计算所有主机$i$的$r^{*}(i)=\sum_{k=1}^{N}\left[w^{+}(i, k)+w^{-}(i, k)\right]$，以及重新规格化所有权值，保证他们的值不会无限增长：
+$$
+w^{+}(i, k) \leftarrow \frac{r(i)}{r^{*}(i)} w^{+}(i, k), w^{-}(i, k) \leftarrow \frac{r(i)}{r^{*}(i)} w^{-}(i, k)
+$$
+
+> After the weights are updated, the $q_i$ are computed using (6) with the new weights. Since this algorithm will tend to increase the probability $q_i$ of those neurons which correspond to hosts that yield a smaller value of $G_i$, each time TAP assigns a task to a host, it uses the host $i$ that corresponds to the largest $q_i$.
+>
+> In order to make sure that TAP tries out other alternates and does not miss out on better options, a fraction $f$ of the decisions are made in round robin fashion: thus we are sure that all hosts will be tried out in succession for$ f  \times 100%$ of the decisions, and the resulting goal function values will also be collected and updated. In the experiments that we describe below, $f$ was taken to be 0.1, i.e. 10 percent. We have actually evaluated this percentage experimentally and found 10 percent to provide the best value in the setting of our experiments, but depending on the size of the system this percentage may vary.
+>
+> Note also that this algorithm can be modified to a probabilistic “sensible” version [36] with:
+> $$
+> p_{i}^{R N N-S}=\frac{q_{i}}{\sum_{j=1}^{N} q_{j}}
+> $$
+> 
+
+更新权重后，使用（6）的新权重计算$ q_i $。由于此算法倾向于增加$q_i$,$q_i$是与产生较小值$ G_i $的主机相对应的那些神经元的概率，每次TAP将任务分配给主机时，它使用对应主机$ i $最大的$ q_i $。
+
+为了确保TAP尝试其他替代方案并且不会错过更好的选项，决策函数$f$使用循环方式设计：这样我们可以确保所有的主机会被连续试过以决定$f \times 100$，另外结果目标函数值会被收集和更新。在我们下面描述的实验中，$ f $被认为是0.1，即10％。我们实际上已经通过实验估计了这个百分比，发现10％可以在我们的实验设置中提供最佳值，但根据系统的大小，这个百分比可能会有所不同。
+
+另请注意，此算法可以修改为概率“合理”版本[36]，如下：
+$$
+p_{i}^{R N N-S}=\frac{q_{i}}{\sum_{j=1}^{N} q_{j}}
+$$
