@@ -492,3 +492,113 @@ $$
 图10中的结果表明基于RNN的算法表现更好;原因可能是它能够根据其QoS要求通过有效学习其历史性能经验来检测任务的最佳主机，并做出更准确的决策（与Sensible相比），将I / O绑定任务分配给主机其中I / O压力较小，并将CPU密集型任务分配给提供更好CPU容量的主机。在实验期间，与主机1,3相比，我们将主机2上的CPU和I / O压力的背景负载降低到最低水平。发现基于RNN的算法能够检测到变化并发送两种类型的后续任务主机2的大多数后续任务，但仍允许CPU受到严重压力的主机为I / O绑定任务提供良好的性能。更一般地说，我们还观察到Round-Robin提供的性能比其他两种算法差。
 
 ![fig10](resource/adaptive-dispatching-of-tasks-in-the-cloud/figure10.png)
+
+## 8 CONTRADICTORY QOS REQUIREMENTS
+
+> Workloads are often characterised differently in terms of their resource and performance requirements. For example, for an online financial management and accounting software providing SaaS services, the web browsing workloads which retrieve large files from web servers generate I/O bound workload, while accounting and financial reporting applications may need a large amount of computation and require high CPU capacity. Thus, in this section we discuss how we may support multiple tasks with multiple QoS requirements for different QoS classes. 
+>
+> However, distinct QoS classes may also generate different levels of income for the Cloud service, and will also have different running costs on different hosts. In addition, they will have distinct service level agreements, and the violation of the SLAs will often have different financial consequences.
+>
+> *Thus we can consider a QoS Goal which includes two contradictory economic requirements: if we allocate a task to a fast processor, the cost will be higher since a more expensive resource is being used, however the resulting response time will be better resulting in fewer SLA violations and hence a lower penalty (and hence cost to the user). Obviously we have the opposite effect when we allocate a task to a slower machine, resulting in a lower economic cost for hosting the task, but in a higher resulting cost in terms of penalties for the cloud due to SLA violations.*
+
+工作量通常在资源和性能要求方面具有不同的特征。例如，对于提供SaaS服务的在线财务管理和会计软件，从Web服务器检索大文件的Web浏览工作负载会生成I / O绑定工作负载，而会计和财务报告应用程序可能需要大量计算并需要高CPU容量。因此，在本节中，我们将讨论如何支持具有针对不同QoS类的多个QoS要求的多个任务。
+
+但是，不同的QoS类别也可能为Cloud服务生成不同的收入级别，并且在不同的主机上也会有不同的运行成本。此外，他们将签订不同的服务水平协议，违反SLA通常会产生不同的财务后果。
+
+因此，我们可以考虑包含两个相互矛盾的经济要求的QoS目标：如果我们将任务分配给快速处理器，则由于使用更昂贵的资源，成本将更高，但是由此产生的响应时间将更好，从而导致更少的SLA违规并因此降低了罚款（从而降低了用户的成本）。显然，当我们将任务分配给较慢的机器时，我们会产生相反的效果，从而导致托管任务的经济成本降低，但由于违反SLA而导致云的处罚成本更高。
+
+> Formalising these two contradictory aspects, consider a set of host servers, and different classes of tasks, so that:
+>
+> - Let the amount paid by the user of a class $j$ task to the cloud service be $I_j$ when the SLA is respected.
+> - Also, let us assume that if a task of QoS class $j$ is allocated to a host $m$ which is of type $M_i$, where the type of host includes aspects such as its memory capacity, its I/O devices, and speed, and the services offered by its software, will result in a cost to the cloud service of $C_{ij}$.
+> - However, if the SLA is not respected there will also be some penalty to be paid by the cloud service to the user, and this penalty must then be deducted from the income that the cloud service was expecting to receive. For instance, the penalty will be zero if the response time $T $of the task is below the SLA upper limit $T_{j,1}>0$ for class j tasks. More generally, the penalty is $c_{jl}$ if $T_{j,l-1} \le T \le kT_{j,l}$, where $T_{j0}=0$ and $c_{j0}=0$ (no penalty).
+
+将这两个相互矛盾的方面形式化，考虑一组主机服务器和不同类别的任务，以便：
+
+- 当遵守SLA时，让类$j$任务的用户向云服务支付的金额为$I_j$。
+- 另外，让我们假设如果将QoS类$ j $的任务分配给$ M_i  $类型的主机$ m $，其中主机类型包括诸如其内存容量，其I / O设备，和速度以及其软件提供的服务将导致云服务的成本为$ C_ {ij} $。
+- 但是，如果不遵守SLA，则云服务将向用户支付一些罚款，然后必须从云服务期望接收的收入中扣除此罚款。例如，如果任务的响应时间$T$低于类$j$任务的SLA的上限$T_{j,1}>0$，那么罚款将变成0。更普遍地来说，当$T_{j0}=0$ 和 $c_{j0}=0$ （没有罚款）时，如果$T_{j,l-1} \le T \le kT_{j,l}$，那么罚款为$c_{jl}$。
+
+> Using standard notation, let $1_{[X]}$ is the function that takes the value $1$ if $X$ is true, and $0$ otherwise. Then the *net income* obtained by the cloud service for running a task of type $j$, after deducing the host operating cost and the eventual penalty for SLA violations, can be written as: 
+> $$
+> \begin{aligned} I_{j}^{*}=I_{j} &-C_{i j} 1_{\left[m=M_{i}\right]} \\ &-\sum_{l=1}^{n}\left\{c_{j l} 1_{\left[T_{j, l} \leq T<T_{j, l+1}\right]}\right\}+c_{j, n+1} 1_{\left[T \geq k T_{j, n+1}\right]} \end{aligned}
+> $$
+> Obviously, the cloud server would like to maximise $I_j^*$ , while $I_j$ is fixed in advance as part of the service agreement.
+>
+> Thus in this section we consider task allocation based on a Goal function that will allocate a machine $M_i$ to a task of class $j$ so as to minimise the net cost function:
+> $$
+> \begin{aligned} C_{j}=C_{i j} 1_{\left[m=M_{i}\right]} &+\sum_{l=1}^{n}\left\{c_{j l} 1_{\left[T_{j, l} \leq T<T_{j, l+1}\right.}\right\} \\ &+c_{j, n+1} 1_{\left[T \geq k T_{j, n+1}\right]} \end{aligned}
+> $$
+> Fig. 11 shows an example of the penalty function, which is the second term in (12), for two distinct classes of tasks, where the $x$-axis is the value of the response time $T$.
+
+用标准符号，让$ 1 _ {[X]} $是函数，如果$ X $为真，则取值$ 1 $，否则为$ 0 $。然后，在扣除主机运营成本和SLA违规的最终惩罚后，云服务获得的用于运行$ j $类型任务的*净收入*可写为：
+$$
+\begin{aligned} I_{j}^{*}=I_{j} &-C_{i j} 1_{\left[m=M_{i}\right]} \\ &-\sum_{l=1}^{n}\left\{c_{j l} 1_{\left[T_{j, l} \leq T<T_{j, l+1}\right]}\right\}+c_{j, n+1} 1_{\left[T \geq k T_{j, n+1}\right]} \end{aligned}
+$$
+显然，云服务器希望最大化$ I_j ^ * $，而$ I_j $作为服务协议的一部分提前修复。
+
+因此，在本节中，我们考虑基于目标函数的任务分配，该函数将机器$ M_i $分配给类$ j $的任务，以便最小化净成本函数：
+$$
+\begin{aligned} C_{j}=C_{i j} 1_{\left[m=M_{i}\right]} &+\sum_{l=1}^{n}\left\{c_{j l} 1_{\left[T_{j, l} \leq T<T_{j, l+1}\right.}\right\} \\ &+c_{j, n+1} 1_{\left[T \geq k T_{j, n+1}\right]} \end{aligned}
+$$
+图11示出了惩罚函数的示例，其是（12）中的第二项，用于两个不同类别的任务，其中$ x $轴是响应时间$ T $的值。
+
+![fig11](resource/adaptive-dispatching-of-tasks-in-the-cloud/figure11.png)
+
+*图11.属于Class 1（左）和Class 2（右）的任务的惩罚函数，与x轴上的任务响应时间相比。*
+
+### 8.1 Experiments with Conflicting QoS Objectives
+
+> We illustrate the preceding discussion with experiments involving tasks of two classes with distinct QoS requirements, and we emulate a heterogeneous host environment where there is a fast host, a slow host and a medium speed host. This is done by stressing the CPUof each host differently, resulting in the speed-up factor of 1 : 2 : 4 forHost 1,2,3.
+>
+> We conducted experiments using (12) as the Goal, with two classes of CPU intensive tasks and the two different penalty functions of Fig. 11 regarding response time. The RNN based algorithm is compared with the Sensible Algorithm.
+>
+> With regard to the terms in (12), we have $M_1=1000$, $M_2 = 2000$ and $M_3 = 4000$ coinciding with our assumption that the faster machines cost more, and the tasks either are “short” with an execution time of 56 ms, or “long” with an execution time of 190ms as measured on the fastest host. Tasks were generated following independent and exponentially distributed inter-task intervals (Poisson arrivals), and four experiments with distinct task arrival rates of 1, 2, 3, 4 tasks/sec were run separately for each class of tasks.
+
+我们通过涉及具有不同QoS要求的两个类的任务的实验来说明前面的讨论，并且我们模拟了具有快速主机，慢速主机和中速主机的异构主机环境。这是通过以不同方式强调每个主机的CPU来实现的，从而导致主机1,2,3的加速因子为1：2：4。
+
+我们使用（12）作为目标进行了实验，具有两类CPU密集型任务和图11中关于响应时间的两种不同惩罚函数。将基于RNN的算法与敏感算法进行比较。
+
+关于（12）中的术语，我们有，并且与我们的假设一致，即更快的机器花费更多，并且任务要么“短”，执行时间为56毫秒，要么“长”，执行时间为在最快的主机上测量190ms。在独立和指数分布的任务间间隔（泊松到达）之后生成任务，并且针对每类任务分别运行具有1,2,3,4个任务/秒的不同任务到达率的四个实验。
+
+> Fig. 12a shows that the RNN algorithm is able to do better in reducing the average response time in the case of the shorter tasks, while the Sensible Algorithm is more effective with regard to average response time for the longer tasks as seen in Fig. 12b, though the RNN based algorithm manages to remain, at least on average below the 1;000 penalty threshold . However we also see that the RNN does better in reducing the overall cost plus SLA violation penalty (indicated as the Total Penalty in the y-axis) as shown in Fig. 12c.
+>
+> We also conduct a separate set of measurements in order to estimate the standard deviation of the response times, and the maximum observed response times as shown in Fig. 13. In these cases, each measurement point that we report is based on five experimental runs with Poisson arrivals, for each of the two classes of tasks, with each experiment lasting 20 minutes in order to generate ample statistical data. In this setting, we again compare the RNN based algorithm with Reinforcement Learning to the Sensible Algorithm, still using the Goal function with the cost defined in (12).
+>
+> In most of the observed data, we see that the RNN-based algorithm can achieve better performance in terms of reducing the standard deviation of the response times leading to more dependable results, and also to maximum response times that lead to a smaller penalty, as expected from the previous data. The exception to this general observation is when tasks arrive at the highest rate of 4 tasks/sec. In this case, it appears that the RNN based algorithm is not receiving timely data via the ACKs, leading to a level of performance that is worse than what is achieved by the Sensible Algorithm.
+
+图12a示出了RNN算法在较短任务的情况下能够更好地减少平均响应时间，而灵敏算法在较长任务的平均响应时间方面更有效，如图12b所示。尽管基于RNN的算法设法保持，但至少平均低于1 000的惩罚阈值。然而，我们还看到RNN在降低总成本加上SLA违规罚分（在y轴上表示为总罚分）方面做得更好，如图12c所示。
+
+我们还进行了一组单独的测量，以估计响应时间的标准偏差，以及最大观察响应时间，如图13所示。在这些情况下，我们报告的每个测量点基于五个实验运行对于两类任务中的每一类，泊松到达，每个实验持续20分钟，以便生成充足的统计数据。在此设置中，我们再次将基于RNN的算法与强化学习与敏感算法进行比较，仍使用目标函数和（12）中定义的成本。
+
+在大多数观察到的数据中，我们看到基于RNN的算法在降低响应时间的标准偏差方面可以获得更好的性能，从而产生更可靠的结果，并且还可以实现最大响应时间，从而导致更小的惩罚，如从以前的数据预期。这个一般观察的例外是当任务以4个任务/秒的最高速率到达时。在这种情况下，似乎基于RNN的算法没有通过ACK接收及时数据，导致性能水平比灵敏算法所实现的更差。
+
+![fig12](resource/adaptive-dispatching-of-tasks-in-the-cloud/figure12.png)
+
+*图12.两类任务的测量总成本的平均值，当分配基于包括经济成本和惩罚的目标函数时，如（12）所示。*
+
+![fig13](resource/adaptive-dispatching-of-tasks-in-the-cloud/figure13.png)
+
+*图13.当任务分配使用目标函数（包括经济成本和两者）时，两类任务的测量响应时间的标准偏差及其作为任务到达率（x轴）的函数的最大值。罚款（12）。注意，正在比较RNN和基于强化学习的算法和敏感算法的性能。*
+
+## 9 CONCLUSIONS AND FUTUREWORK
+
+> In this paper we have first reviewed the area of task allocation to cloud servers, and then presented TAP, an experimental task allocation platform which can incorporate a variety of different algorithms to dispatch tasks to hosts in the cloud operating in SaaS mode, before reporting on numerous experiments that have used TAP to compare a variety of task allocation algorithms under different operating conditions and with different optimisation criteria. 
+>
+> We consider simple static allocations schemes, such as Round Robin, and a probabilistic allocation which distributes load evenly. We also study a model driven algorithm which uses model based estimates of response time to select distinct allocation rates to different hosts. Two measurement driven adaptive on-line algorithms are also considered: the RNN based algorithm with Reinforcement Leaning, and the Sensible Algorithm that bring intelligence to bear from observations and make judicious allocation decisions.
+>
+> Numerous experiments with different task profile, and optimisation objectives were considered, with two different sets of host machines: one composed of hosts with similar processing speeds, and another one with hosts having different speeds due to distinct background loads at each host.
+>
+> Experiments showed Round Robin is effective when the processing rates and loads at each of the hosts are very similar. However when the hosts are quite distinct, the RNN based algorithm with Reinforcement-Learning offered fine-grained QoS-aware task allocation algorithm for accurate decisions, provided that online measurements are frequently updated. We found that the Sensible Algorithm offers a robust QoS-aware scheme with the potential to perform better under heavier load. The fixed arrival rate scheme, with full information of arrival rates and service rates, outperformed both the RNN and “sensible” approach due to the fact that it employs the solution of an analytical model to minimise task response time under known mathematical assumptions. However such assumptions will not usually be known or valid in practice; thus it is useful as a benchmark but cannot be recommended in practical situations.
+>
+> In future work we will investigate the use of more sophisticated mathematical models such as diffusions approximations [39] to build an on-line measurement and model driven allocation algorithm that exploiting measurements of the arrival and service statistics at each of the hosts in order to estimate the task allocation probabilities. Although we expect that such an approach will have its limits due to the increase of the data that it will need, it may offer a better predictor for more accurate task allocations, and especially it could be used to benchmark other approaches. We would also like to study the cloud system we have described when a given set of hosts is used by multiple task allocation systems operating with heterogenous input streams (such as web services, mobile services and compute intensive applications), to see which schemes are the most robust and resilient. One aspect we have not discussed is the order in which tasks are executed, for instance time-stamp order [46]: although this may not be important in some applications, in others which are updated some global system state (such as a bank account), the order in which operations are carried out is critical, and tasks which are related by time-stamp order would have to be carried out in that order to avoid having to reprocess them if that order is violated. Another direction we wish to undertake is the study of the robustness of allocation schemes for cloud services in the presence of network and service attacks [47] that are designed to disrupt normal operations. Another interesting direction for research will be to study how techniques that are similar to the ones we have developed in this paper, may be exploited in the context of Grid Computing [48].
+
+在本文中，我们首先回顾了云服务器的任务分配领域，然后介绍了TAP，这是一个实验任务分配平台，它可以结合各种不同的算法，将任务分配给在SaaS模式下运行的云中的主机，然后再进行报告。许多实验已经使用TAP在不同的操作条件和不同的优化标准下比较各种任务分配算法。
+
+我们考虑简单的静态分配方案，例如Round Robin，以及均匀分配负载的概率分配。我们还研究了一种模型驱动算法，该算法使用基于模型的响应时间估计来为不同的主机选择不同的分配率。还考虑了两种测量驱动的自适应在线算法：基于RNN的增强倾斜算法，以及智能算法，它可以从观察中获取智能并做出明智的分配决策。
+
+使用两组不同的主机来考虑具有不同任务简档和优化目标的大量实验：一组由具有相似处理速度的主机组成，另一组主机由于每个主机处的不同背景负载而具有不同速度的主机。
+
+实验表明，当每个主机的处理速率和负载非常相似时，Round Robin是有效的。然而，当主机非常不同时，基于RNN的增强学习算法提供了细粒度的QoS感知任务分配算法，用于准确决策，前提是在线测量经常更新。我们发现，敏感算法提供了一种强大的QoS感知方案，可以在更重的负载下表现更好。具有到达率和服务率的完整信息的固定到达率方案优于RNN和“明智”方法，因为它采用分析模型的解决方案以在已知的数学假设下最小化任务响应时间。但是，这种假设在实践中通常不会被知道或有效;因此它作为基准有用，但在实际情况下不能推荐。
+
+在未来的工作中，我们将研究使用更复杂的数学模型，如扩散近似[39]来构建在线测量和模型驱动的分配算法，该算法利用每个主机的到达和服务统计数据的测量值来估计任务分配概率。尽管我们预计这种方法会因其所需数据的增加而受到限制，但它可以为更准确的任务分配提供更好的预测，尤其是它可以用于对其他方法进行基准测试。我们还想研究我们所描述的云系统，当一组给定的主机被多个任务分配系统用于异构输入流（例如Web服务，移动服务和计算密集型应用程序）时，看看哪些方案是最强大，最有弹性。我们尚未讨论的一个方面是执行任务的顺序，例如时间戳顺序[46]：虽然这在某些应用程序中可能不重要，但在其他应用程序中更新某些全局系统状态（例如银行帐户）），执行操作的顺序是至关重要的，并且必须按顺序执行与时间戳顺序相关的任务，以避免在违反该顺序时重新处理它们。我们希望进行的另一个方向是研究在存在网络和服务攻击的情况下云服务的分配方案的稳健性[47]，旨在破坏正常运营。研究的另一个有趣方向是研究如何在我们在本文中开发的技术类似于网格计算的背景下[48]。
