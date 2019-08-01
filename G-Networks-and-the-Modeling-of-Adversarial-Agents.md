@@ -51,3 +51,19 @@ $$
 q(i, c, k)=\lim _{t \rightarrow \infty} \operatorname{prob}[g(t, c, k)=i]
 $$
 
+
+
+## 4 Conclusions
+
+> In this paper, we have presented a stochastic approach based on G-Networks, which models large scale agent systems. The approach models systems containing collaboration, competition and mutation under the condition that complete information of the system is available. We first described the systems of interest, the mathematical model and demonstrated the approach with some scenarios of military planning in urban environments. Results show that our approach identifies the parameters that strongly influence the agents’ performance and allows us to compare alternative strategies at low computational cost. We then proposed an extension to the model which deals with systems where complete information is not readily available.
+>
+> We plan to incorporate behaviors such as reproduction into the model so that it can be applied in fields such as system biology. After the initial success of obtaining the motion probability via observation, we are investigating how to deduce agents’ intention via similar means. This undoubtedly will reduce the dependence of model to the system’s knowledge.
+>
+> In reality, obstacles in urban environment have an impact on an agent’s behavior. For example, a building might be an obstacle for a car but not a pedestrian. Therefore we plan to change the obstacles so that they have different impact on agents' behaviors and incorporate the wall following method mentioned in [18] to deal with the local-minima problem. In doing so, we are able to model more realistic urban scenarios. Theoretical wise, we aim to study the computational constraints related to resources or time-frame, as well as conduct an extensive exploration on modelling large scale agent systems at different abstraction levels.
+
+在本文中，我们提出了一种基于G-Networks的随机方法，该方法对大规模代理系统进行建模。该方法在系统的完整信息可用的条件下模拟包含协作，竞争和变异的系统。我们首先描述了感兴趣的系统，数学模型，并在城市环境中展示了军事规划的一些方案。结果表明，我们的方法确定了强烈影响代理性能的参数，并允许我们以低计算成本比较替代策略。然后，我们提出了对模型的扩展，该模型处理的是无法获得完整信息的系统。
+
+我们计划将诸如再现之类的行为结合到模型中，以便它可以应用于系统生物学等领域。在通过观察获得运动概率的初步成功之后，我们正在研究如何通过类似手段推断出代理人的意图。这无疑将减少模型对系统知识的依赖。
+
+实际上，城市环境中的障碍会影响代理人的行为。例如，建筑物可能是汽车的障碍而不是行人的障碍。因此，我们计划改变障碍，使它们对代理人的行为产生不同的影响，并采用[18]中提到的墙跟随方法来处理局部最小问题。通过这样做，我们能够模拟更现实的城市场景。理论上，我们的目标是研究与资源或时间框架相关的计算约束，并对不同抽象层次的大规模代理系统进行建模的广泛探索。
+
