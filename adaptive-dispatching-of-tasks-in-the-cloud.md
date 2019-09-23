@@ -203,9 +203,10 @@ $$
 > 
 
 - $l=0$代表空主机（即主机上没有任务）
-- 对于任意状态$l\ge0$到状态$l+1$的转换率是主机$\lambda_i$的任务到达率
+- 对于任意状态$l\ge0$到状态$l+1$的转换率是主机的任务到达率$\lambda_i$
 - 从状态1到状态0的转换率是$\mu_{i}(1)=T_{i}^{-1}$，其中$T_i$是在主机上任务(任务自身)的平均执行时间
 - 从状态$l+1$到状态$l$的转换率是准常数，由$\mu_{i 0} \equiv(l . \gamma(l) / \gamma(1)) \mu_{i}(1)$ 给出
+- 任务到主机$ i $的到达率是$ \lambda_ {i} = p_ {i} ^ {m} \lambda $，其中$ p_ {i} ^ {m} $是使用基于模型的TAP的概率算法将任务分配给主机 $ i $，$ \lambda $是TAP任务的总到达率。
 
 
 > The probability that there are $l$ tasks at Host $i$ in steady-state is then: 
@@ -233,6 +234,12 @@ $$
 时，不同组合$\left[\lambda_{1}, \lambda_{2}, \lambda_{3}\right]$的平均任务响应时间的变化。
 
 ![fig4](./resource/adaptive-dispatching-of-tasks-in-the-cloud/figure4.png)
+
+-----
+
+*补充：概率p的上标，如$p^m_i$，$m$表示基于概率模型，$i$表示主机编号。如$p^s$则表示这个概率是sensible routing的*
+
+-----
 
 #### 4.1.2 Sensible Routing
 
