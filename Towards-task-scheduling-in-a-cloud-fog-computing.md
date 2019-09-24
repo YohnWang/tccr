@@ -40,3 +40,67 @@
 
 ## IV. TASK SCHEDULING IN CLOUD-FOG COMPUTING SYSTEM
 
+> **A. Task graph**
+>
+> A task graph is represented by a Directed Acyclic Graph (DAG), $G=(V,E)$, where the set of vertices $V = \{v_1,v_2,...,v_n\}$ denotes the set of parallel subtasks and each edge $e_{ij} \in E$ represents the precedence constraint such that task $v_i$ should complete its execution before task $v_j$ starts. 
+>
+> Each task $v_i \in V$ has positive workload $w_i$ representing the amount of computing works (e.g. the number of instructions), which have to be processed at the computing resources. And each edge $e_{ij} \in E$ has nonnegative weight $c_{ij}$ representing the amount of communication data transfered from task $v_i$ and used as input data for task $v_j$ . We assume that the sufficient input data of each task is gathered not only from the preceding tasks but also from other data sources (i.e. data storages) on both cloud and fog infrastructure. A task cannot begin execution until all its inputs have arrived. 
+>
+> The set of all direct predecessors and successors of $v_i$ is denoted as $pred(v_i)$ and $succ(v_i)$ respectively. We assume that $G$ has an entry task, $v_{entry}$, without any predecessors and an exit task, $v_{exit}$, without any successors.
+
+**A. 任务图**
+
+任务图由有向无环图（DAG）表示，$ G =（V，E）$，其中顶点集$ V = \{v_1，v_2，...，v_n \} $表示 并行子任务，并且每个边$ e_ {ij} \in E$表示优先约束，因此任务 $v_i $应该在任务$ v_j $开始之前执行完成。
+每个任务$v_i \in V$有正的工作负载$w_i$表示必须在计算资源上处理的计算工作量（例如指令数）。并且每条边$e_{ij} \in E$有一个非负权重$c_{ij}$代表从任务$v_i$传输的通信数据量和用作任务$v_i$的输入数据量。我们假设每个任务的充足输入数据不仅从前面的任务中收集，而且还从云和雾基础设施上的其他数据源（即数据存储）中收集。任务的所有输入都到达后才能开始执行。
+
+所有$v_i$直接的前置和后置任务的集合被记为$pred(v_i)$和$succ(v_i)$。我们假定$G$有一个入口任务$v_{entry}$，他没有任何的前置任务，和一个退出任务$v_{exit}$，他没有任何后继任务。
+
+> **B. Processor graph**
+>
+> A processor graph $PG = (N,D)$ denotes the topology of a cloud-fog network, where the set of vertices $N = \{P_1,P_2,...,P_n\}$ denotes the set of processors, each of which is cloud or fog node and an edge $d_{ij} \in D$ denotes a link between processor $P_i$ and $P_j$ . Let $N_{cloud}$ and $N_{fog}$ denotes the set of cloud nodes and the set of fog nodes respectively.
+> Hence, $N = N_{cloud} \cup N_{fog}$. Each processor $P_i$ has processing rate $p_i$ and the link $d_{ij}$ between processor $P_i$ and $P_j$ has bandwidth $bw_{ij}$ .
+
+**B. 处理器图**
+
+处理器图$ PG =(N,D)$表示云雾网络的拓扑，其中顶点集合$ N = \{P_1，P_2，...，P_n \} $表示处理器集合， 每个节点都是云或雾节点，并且每条边$d_{ij} \in D$表示处理器$ P_i $和$ P_j $之间的链接。 令$ N_ {cloud} $和$ N_ {fog} $分别表示云节点集和雾节点集。 因此，$ N = N_ {cloud} \cup N_ {fog} $。 每个处理器$ P_i $具有处理速率$ p_i $，并且处理器$ P_i $和$ P_j $之间的链接$ d_ {ij} $具有带宽$ bw_ {ij} $。
+
+> **C. Proposed method**
+>
+> Given a task graph $V =\{v1, v2,...,v_n\}$ and a processor graph $P = (N,D)$, we consider to choose the most appropriate schedule to execute the tasks. Our method has two phases:
+>
+> 1) *Determining the task priority:* In this phase, tasks are ordered by their scheduling priorities that are based on upward ranking. Basically, the upward rank of a task $v_i$ is the length of the critical path from $v_i$ to the exit task, including the computation time of task $v_i$. Let $pri(v_i)$ be the priority value of task $v_i$ and be recursively defined by:
+> $$
+> pri\left(v_{i}\right)=\left\{\begin{array}{ll}{\overline{w\left(v_{i}\right)}+\max\limits_{v_{j} \in \operatorname{succ}\left(v_{i}\right)}\left[\overline{\mathcal{c}\left(e_{i j}\right)}+pri\left(v_{j}\right)\right]} & { \text { if } v_{i} \neq v_{e x i t}} \\ \overline{w\left(v_{i}\right)} {} & {\text { if } v_{i} \equiv v_{e x i t}}\end{array}\right.
+> $$
+> where $\overline{w(v_i)}$ is the average execution time of task $v_i$ and $\overline{c(e_{ij})}$ is the average data transfer time between two tasks $v_i$ and $v_j$. They are computed by:
+> $$
+> \begin{gather} \overline{w(v_{i})}=\frac{w_{i}}{\overline{W}} \\  \overline{c\left(e_{i j}\right)} =\frac{c_{i j}}{\overline{B W}} \end{gather}
+> $$
+> with $\overline{W}$ is the average processing rate of all processors and $\overline{BW}$ is the average transfer rate or bandwidth among all processors.
+
+**C.建议方法**
+
+给定任务图$ V = \{v1，v2，...，v_n \} $和处理器图$ P =(N,D)$，我们考虑选择最合适的时间表来执行任务。我们的方法分为两个阶段：
+
+1）*确定任务优先级：*在此阶段，根据任务的调度优先级对任务进行排序，这些调度优先级基于向上排序。基本上，任务$ v_i $的向上排名是从$ v_i $到退出任务的关键路径的长度，包括任务$ v_i $的计算时间。令$ pri(v_i)$为任务$ v_i $的优先级值，并通过以下方式递归定义：
+$$
+pri\left(v_{i}\right)=\left\{\begin{array}{ll}{\overline{w\left(v_{i}\right)}+\max\limits_{v_{j} \in \operatorname{succ}\left(v_{i}\right)}\left[\overline{\mathcal{c}\left(e_{i j}\right)}+pri\left(v_{j}\right)\right]} & { \text { if } v_{i} \neq v_{e x i t}} \\ \overline{w\left(v_{i}\right)} {} & {\text { if } v_{i} \equiv v_{e x i t}}\end{array}\right.
+$$
+其中$\overline{w(v_i)}$是任务$v_i$的平均处理时间，$\overline{c(e_{ij})}$是任务$v_i$和$v_j$之间的平均数据传输时间，他们被计算为：
+$$
+\begin{gather} \overline{w(v_{i})}=\frac{w_{i}}{\overline{W}} \\  \overline{c\left(e_{i j}\right)} =\frac{c_{i j}}{\overline{B W}} \end{gather}
+$$
+其中$\overline{W}$是所有处理器的平均处理率，$\overline{BW}$是所有处理器之间的平均传输率或带宽。
+
+> *2) Selecting the most appropriate node to execute each task:* In this phase, the two parameters Earliest Start Time (EST) and Earliest Finish Time (EFT) need to be defined. A task $v_i$ cannot begin its execution until all its inputs have been available. Let $t_{dr}(v_i)$ be the time when all input data of $v_i$ is ready to be transfered to the selected node for executing the task $v_i$. It is also the time when the last preceding task of $v_i$ is finished. Thus $t_{dr}(v_i)$ is defined by:
+> $$
+> t_{dr}(v_i)=\max_{v_j \in pred(v_i),P_m \in N} \left[ t_f(v_j,P_m) \right]
+> $$
+> where $t_f(v_j,P_m)$ is the finish time of task $v_j$ on node $P_m$. For the entry task, $t_{dr}(v_{entry}) = 0$.
+
+*2）选择最合适的节点来执行每个任务:* 在此阶段，需要定义两个参数最早开始时间（EST）和最早结束时间（EFT）。在所有输入可用之前，任务$ v_i $无法开始执行。设$ t_ {dr}(v_i)$为$ v_i $的所有输入数据准备好传输到所选节点以执行任务$ v_i $的时间。这也是$ v_i $的最后一个前置任务完成的时间。因此，$ t_ {dr}（v_i）$定义为：
+$$
+t_{dr}(v_i)=\max_{v_j \in pred(v_i),P_m \in N} \left[ t_f(v_j,P_m) \right]
+$$
+其中$t_f(v_j,P_m)$是任务$v_j$在节点$P_m$上的完成时间。对于入口任务，$t_{dr}(v_{entry}) = 0$
+
