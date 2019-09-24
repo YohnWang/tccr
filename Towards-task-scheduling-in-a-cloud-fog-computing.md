@@ -104,3 +104,16 @@ t_{dr}(v_i)=\max_{v_j \in pred(v_i),P_m \in N} \left[ t_f(v_j,P_m) \right]
 $$
 其中$t_f(v_j,P_m)$是任务$v_j$在节点$P_m$上的完成时间。对于入口任务，$t_{dr}(v_{entry}) = 0$
 
+> Suppose task $v_i$ is assigned to node $P_n$. Let $c(e^{mn}_i )$ be the data transfer time from node $P_m$to node $P_n$ to execute task $v_i$, then $c(e^{mn}_i )$ is defined as follows [7]:
+> $$
+> c(e^{mn}_i)=\left\{ 
+> \begin{matrix}
+> \left( d^m_i + \sum\limits^{v_j \in pred(v_i)}_{v_j \in exec(P_m)c_{ji}}*\frac{1}{bw_{mn}} \right)& \text{if } m \ne n 
+> \\
+> 0 & \text{if } m=n
+> \end{matrix}
+> \right.
+> $$
+
+where $d_i^m$ is the amount of data already stored at processor $P_m$ for executing task $v_i$ and $exec(P_m)$ is the set of tasks executed at node $P_m$
+
