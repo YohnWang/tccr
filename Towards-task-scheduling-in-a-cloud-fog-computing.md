@@ -114,6 +114,127 @@ $$
 > \end{matrix}
 > \right.
 > $$
+> where $d_i^m$ is the amount of data already stored at processor $P_m$ for executing task $v_i$ and $exec(P_m)$ is the set of tasks executed at node $P_m$.
+>
+> When all necessary input data stored from all data storages on either cloud nodes or fog nodes arrive at the target processing node, task execution will begin. Therefore, the values of $EST(v_i, P_n)$ and $EFT(v_i,P_n)$ are computed as follows:
+> $$
+> EST(v_i,P_n)=max\left\{ avail(P_n),t_{dr}(v_i)+\max\limits_{P_m \in N}(c(e_i^{mn})) \right\}
+> $$
+>
+> $$
+> EFT(v_i,P_n)=w(v_i,P_n)+EST(i,j)
+> $$
+>
+> 
 
-where $d_i^m$ is the amount of data already stored at processor $P_m$ for executing task $v_i$ and $exec(P_m)$ is the set of tasks executed at node $P_m$
+假设任务$ v_i $已分配给节点$ P_n $。假设$ c(e ^ {mn} _i)$是从节点$ P_m $到节点$ P_n $执行任务$ v_i $的数据传输时间，则$ c(e ^ {mn} _i)$的定义如下[7]：
+$$
+c(e^{mn}_i)=\left\{  \begin{matrix} \left( d^m_i + \sum\limits^{v_j \in pred(v_i)}_{v_j \in exec(P_m)c_{ji}}*\frac{1}{bw_{mn}} \right)& \text{if } m \ne n  \\ 0 & \text{if } m=n \end{matrix} \right.
+$$
+其中$ d_i ^ m $是已经存储在处理器$ P_m $上的用于执行任务$ v_i $的数据量，而$ exec(P_m)$是在节点$ P_m $处执行的任务集。
 
+当从云节点或雾节点上的所有数据存储中存储的所有必要输入数据到达目标处理节点时，任务将开始执行。因此，$ EST(v_i,P_n)$和$ EFT(v_i,P_n)$的值计算如下：
+$$
+EST(v_i,P_n)=max\left\{ avail(P_n),t_{dr}(v_i)+\max\limits_{P_m \in N}(c(e_i^{mn})) \right\}
+$$
+
+$$
+EFT(v_i,P_n)=w(v_i,P_n)+EST(i,j)
+$$
+
+> where $avail(P_n)$ is the earliest time that node $P_n$ completes the last assigned task and be ready to execute another task; $w(v_i,P_n)$ is the execution time of task $v_i$ on node $P_n$. They are computed as follows:
+> $$
+> \begin{gather}
+> avail(P_n)=\max\limits_{v_j \in exec(P_n)}\left[t_f(v_j,P_n)\right] \\
+> w(v_i,P_n)=\frac{w_i}{p_n}
+> \end{gather}
+> $$
+> Besides, the algorithm also considers the monetary cost that fog provider is charged for the use of cloud resources. The fog provider rents both virtual hosts representing for the computing resources and network bandwidth from cloud providers in order to extend the capabilities of their own fog nodes. Thus, if $P_n$ is a cloud node, the monetary cost $cost(v_i,P_n)$ for executing task $v_i$ on $P_n$ includes two parts: the processing cost $c_{proc}^{(v_i,P_n)}$ of $v_i$ on$ P_n$ and the communication cost $c_{comm}^{(v_i,P_m)}$ for the amount of outgoing data from a cloud node $P_m \in N_{cloud}$ to the target node $P_n$ to process task $v_i$. In contrast, if $P_n$ is a fog node, the fog provider only needs to pay for transferring the outgoing data from cloud nodes to the target fog node in the local system. Therefore, the total cost for executing task $v_i$ on a specific node $P_n$ is defined by:
+
+其中$ avail(P_n)$是节点$ P_n $完成最后分配的任务并准备执行另一任务的最早时间；$ w(v_i,P_n)$是节点$ P_n $上任务$ v_i $的执行时间。它们的计算如下：
+$$
+\begin{gather} avail(P_n)=\max\limits_{v_j \in exec(P_n)}\left[t_f(v_j,P_n)\right] \\ w(v_i,P_n)=\frac{w_i}{p_n} \end{gather}
+$$
+此外，该算法还考虑了雾提供商因使用云资源而收取的金钱成本。雾提供商从云提供商那里租用了代表计算资源和网络带宽的虚拟主机，以扩展其自己的雾节点的功能。因此，如果$ P_n $是云节点，则在$ P_n $上执行任务$ v_i $的货币成本$ cost(v_i,P_n)$包括两部分：$v_i$在$P_n$上执行的处理成本$c_{proc}^{(v_i,P_n)}$，为了处理任务$v_i$而从一个云节点$P_m \in N_{cloud}$到目标节点$P_n$的外发数据量的通信成本 $c_{comm}^{(v_i,P_m)}$。相反，如果$ P_n $是一个雾节点，则雾提供者只需支付将传出数据从云节点传输到本地系统中的目标雾节点的费用。因此，在特定节点$ P_n $上执行任务$ v_i $的总成本定义为：
+
+> $$
+> cost(v_i,P_n)=\left\{ 
+> \begin{gather}
+> c_{proc}^{(v_i,P_n)}+\sum_{P_m \in N_{cloud}}
+> c_{comm}^{(v_i,P_m)} \text{ if }P_n \in N_{cloud} 
+> \\
+> \sum_{P_m \in N_{cloud}}
+> c_{comm}^{(v_i,P_m)} \text{ if }P_n \in N_{fog} \\
+> \end{gather}
+> \right.
+> \quad (10)
+> $$
+>
+> In (10), the processing cost $c^{(v_i,P_n)}_{proc}$ proc is calculated as follows:
+> $$
+> c_{proc}^{(v_i,P_n)}=c_1*w(v_i,P_n)
+> $$
+> where $c_1$ is the processing cost per time unit of workflow execution on cloud node $P_n$. Let $c_2$ be the the amount of money per time unit for transferring outgoing data from cloud node $P_m$, then the communication cost $c_{comm}^{(v_i,P_m)}$ is calculated as follows:
+> $$
+> c_{comm}^{(v_i,P_m)}=c_2*\left(d_i^m+\sum_{v_j \in exec(P_m)}^{v_j \in pred(v_i)} c_{ji} \right)
+> $$
+> 
+
+$$
+cost(v_i,P_n)=\left\{  \begin{gather} c_{proc}^{(v_i,P_n)}+\sum_{P_m \in N_{cloud}} c_{comm}^{(v_i,P_m)} \text{ if }P_n \in N_{cloud}  \\ \sum_{P_m \in N_{cloud}} c_{comm}^{(v_i,P_m)} \text{ if }P_n \in N_{fog} \\ \end{gather} \right.
+\quad (10)
+$$
+
+在（10）中，处理成本$ c^{(v_i,P_n)}_{proc}$计算如下：
+$$
+c_{proc}^{(v_i,P_n)}=c_1*w(v_i,P_n)
+$$
+其中$ c_1 $是在云节点$ P_n $上工作流执行的每个时间单位的处理成本。假设$ c_2 $是每单位时间从云节点$ P_m $传输传出数据的金额，则通信成本$c_{comm}^{(v_i,P_m)}$的计算如下：
+$$
+c_{comm}^{(v_i,P_m)}=c_2*\left(d_i^m+\sum_{v_j \in exec(P_m)}^{v_j \in pred(v_i)} c_{ji} \right)
+$$
+
+> From this cost, we can define an utility function which computes the tradeoff between the cost and EFT as follows:
+> $$
+> U(v_i,P_n)=
+> \frac{\min\limits_{P_k\in N}[cost(v_i,P_k)]}{cost(v_i,P_n)}
+> *
+> \frac{\min\limits_{P_k\in N}[EFT(v_i,P_k)]}{EFT(v_i,P_n)} \quad(13)
+> $$
+> Then, the task $v_i$ is assigned to the node $P_n$, which provides the maximal value of the tradeoff $U(v_i, P_n)$. Our method is presented in Algorithm 1.
+
+根据该成本，我们可以定义一个效用函数，该函数计算成本与EFT之间的权衡，如下所示：
+$$
+U(v_i,P_n)= \frac{\min\limits_{P_k\in N}[cost(v_i,P_k)]}{cost(v_i,P_n)} * \frac{\min\limits_{P_k\in N}[EFT(v_i,P_k)]}{EFT(v_i,P_n)} \quad(13)
+$$
+然后，任务$v_i$被分配给节点$ P_n $，节点$ P_n $提供了折衷$ U(v_i,P_n)$的最大值。我们的方法在算法1中介绍。
+
+## V. EXPERIMENTAL RESULTS
+
+> In this experiment, we present the results to show that our proposed algorithm can provide a good tradeoff between the makespan and the cost of task execution. We compare our algorithm with three others: Greedy for Cost, where each task is assigned to the the most cost-saving processing node and the classical HEFT [4] and DLS [3] algorithms mentioned in section 2. We use Cloudsim for modeling and simulation of the cloud-fog computing infrastructure. All the parameters are presented in Table I. The task matrix size is raised from 20 to 100 with the increasing steps of 20.
+>
+> In order to prove that our algorithm can achieve better tradeoff value between the makespan and the cost of task execution than other methods, we define a comparision criteria called Cost Makespan Tradeoff (CMT) as follows:
+> $$
+> CMT(a_i)=\frac{\min\limits_{a_k\in SAL}[cost(a_k)]}{cost(a_i)}
+> *
+> \frac{\min\limits_{a_l\in SAL}[makespan(a_l)]}{makespan(a_i)}
+> $$
+> 
+
+在这个实验中，我们给出的结果表明，我们提出的算法可以在有效期和任务执行成本之间提供良好的折衷。我们将我们的算法与其他三个算法进行了比较：贪婪的成本，其中每个任务都分配给最节省成本的处理节点，以及第2节中提到的经典的HEFT [4]和DLS [3]算法。我们使用Cloudsim进行建模和云雾计算基础架构的模拟。表I列出了所有参数。任务矩阵的大小从20增加到100，步长为20。
+
+为了证明我们的算法与其他方法相比，可以在完成时间跨度和任务执行成本之间实现更好的权衡值，我们定义了一个比较标准，称为“成本进行跨度权衡”（CMT），如下所示：
+$$
+CMT(a_i)=\frac{\min\limits_{a_k\in SAL}[cost(a_k)]}{cost(a_i)} * \frac{\min\limits_{a_l\in SAL}[makespan(a_l)]}{makespan(a_i)}
+$$
+![fig2](resource/Towards-task-scheduling-in-a-cloud-fog-computing/2.png)
+
+![1569416865390](resource/Towards-task-scheduling-in-a-cloud-fog-computing/3.png)
+
+> where $SAL = \{a1,a2,...,a_n\}$ is the list of all scheduling algorithms, which we compute the $CMT$ value of each algorithm $a_i \in SAL$. The higher of CMT value, the better tradeoff level on monetary cost and schedule length that an algorithm can provide. The maximum value of this metric is 1, which is reachable if both cost and schedule length of an algorithm are the best compared with the others’.
+>
+> Figures 2 shows the comparision between our algorithm and the above-mentioned algorithms on the CMT metric. We can see that our algorithm is stable and achieve the highest CMT value compared with the others in most cases. Compared with Greedy for Cost algorithm, which achieves the minimum monetary cost but long schedule length, our algorithm has better $CMT$ value in all cases. The $\text{HEFT}$algorithm achieves the minimum schedule length but it goes with the significant increase of cost. The $DLS$ algorithm also achieves small schedule length, but it requires much more cost for cloud resources and thus gets the worst $CMT$ value, which is about from 15% to 25% lower than our proposed algorithm.
+
+其中$ SAL = \{a1，a2，...，a_n \} $是所有调度算法的列表，就是我们对每个算法$a_i \in SAL$计算$CMT$的值。CMT值越高，算法可以提供的货币成本和调度长度的折衷水平就越高。该指标的最大值为1，如果算法的成本和进度长度两者都比其他算法最好，则可以达到该指标。
+
+图2显示了我们的算法与上述算法在CMT度量上的比较。我们可以看到，在大多数情况下，与其他算法相比，我们的算法稳定并且可以实现最高的CMT值。与贪婪的成本算法相比，该算法可实现最低的货币成本，但调度时间较长，因此在所有情况下，其算法的$ CMT $值均更好。$ \text{HEFT} $算法可以达到最小的计划长度，但是会大大增加成本。$ DLS $算法还可以实现较小的调度长度，但是它需要更多的云资源成本，因此可以获得最差的$ CMT $值，比我们提出的算法低15％到25％。
