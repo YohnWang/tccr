@@ -108,7 +108,7 @@ $$
 > $$
 > c(e^{mn}_i)=\left\{ 
 > \begin{matrix}
-> \left( d^m_i + \sum\limits^{v_j \in pred(v_i)}_{v_j \in exec(P_m)c_{ji}}*\frac{1}{bw_{mn}} \right)& \text{if } m \ne n 
+> \left( d^m_i + \sum\limits^{v_j \in pred(v_i)}_{v_j \in exec(P_m)}c_{ji}\right)*\frac{1}{bw_{mn}} & \text{if } m \ne n 
 > \\
 > 0 & \text{if } m=n
 > \end{matrix}
@@ -129,7 +129,7 @@ $$
 
 假设任务$ v_i $已分配给节点$ P_n $。假设$ c(e ^ {mn} _i)$是从节点$ P_m $到节点$ P_n $执行任务$ v_i $的数据传输时间，则$ c(e ^ {mn} _i)$的定义如下[7]：
 $$
-c(e^{mn}_i)=\left\{  \begin{matrix} \left( d^m_i + \sum\limits^{v_j \in pred(v_i)}_{v_j \in exec(P_m)c_{ji}}*\frac{1}{bw_{mn}} \right)& \text{if } m \ne n  \\ 0 & \text{if } m=n \end{matrix} \right.
+c(e^{mn}_i)=\left\{  \begin{matrix} \left( d^m_i + \sum\limits^{v_j \in pred(v_i)}_{v_j \in exec(P_m)}c_{ji}\right)*\frac{1}{bw_{mn}} & \text{if } m \ne n  \\ 0 & \text{if } m=n \end{matrix} \right.
 $$
 其中$ d_i ^ m $是已经存储在处理器$ P_m $上的用于执行任务$ v_i $的数据量，而$ exec(P_m)$是在节点$ P_m $处执行的任务集。
 
