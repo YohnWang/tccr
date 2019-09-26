@@ -233,8 +233,17 @@ $$
 
 > where $SAL = \{a1,a2,...,a_n\}$ is the list of all scheduling algorithms, which we compute the $CMT$ value of each algorithm $a_i \in SAL$. The higher of CMT value, the better tradeoff level on monetary cost and schedule length that an algorithm can provide. The maximum value of this metric is 1, which is reachable if both cost and schedule length of an algorithm are the best compared with the others’.
 >
-> Figures 2 shows the comparision between our algorithm and the above-mentioned algorithms on the CMT metric. We can see that our algorithm is stable and achieve the highest CMT value compared with the others in most cases. Compared with Greedy for Cost algorithm, which achieves the minimum monetary cost but long schedule length, our algorithm has better $CMT$ value in all cases. The $\text{HEFT}$algorithm achieves the minimum schedule length but it goes with the significant increase of cost. The $DLS$ algorithm also achieves small schedule length, but it requires much more cost for cloud resources and thus gets the worst $CMT$ value, which is about from 15% to 25% lower than our proposed algorithm.
+> Figures 2 shows the comparision between our algorithm and the above-mentioned algorithms on the $CMT$ metric. We can see that our algorithm is stable and achieve the highest $CMT$ value compared with the others in most cases. Compared with Greedy for Cost algorithm, which achieves the minimum monetary cost but long schedule length, our algorithm has better $CMT$ value in all cases. The $\text{HEFT}$algorithm achieves the minimum schedule length but it goes with the significant increase of cost. The $DLS$ algorithm also achieves small schedule length, but it requires much more cost for cloud resources and thus gets the worst $CMT$ value, which is about from 15% to 25% lower than our proposed algorithm.
 
 其中$ SAL = \{a1，a2，...，a_n \} $是所有调度算法的列表，就是我们对每个算法$a_i \in SAL$计算$CMT$的值。CMT值越高，算法可以提供的货币成本和调度长度的折衷水平就越高。该指标的最大值为1，如果算法的成本和进度长度两者都比其他算法最好，则可以达到该指标。
 
-图2显示了我们的算法与上述算法在CMT度量上的比较。我们可以看到，在大多数情况下，与其他算法相比，我们的算法稳定并且可以实现最高的CMT值。与贪婪的成本算法相比，该算法可实现最低的货币成本，但调度时间较长，因此在所有情况下，其算法的$ CMT $值均更好。$ \text{HEFT} $算法可以达到最小的计划长度，但是会大大增加成本。$ DLS $算法还可以实现较小的调度长度，但是它需要更多的云资源成本，因此可以获得最差的$ CMT $值，比我们提出的算法低15％到25％。
+图2显示了我们的算法与上述算法在$CMT$度量上的比较。我们可以看到，在大多数情况下，与其他算法相比，我们的算法稳定并且可以实现最高的$CMT$值。与贪婪的成本算法相比，该算法可实现最低的货币成本，但调度时间较长，因此在所有情况下，其算法的$ CMT $值均更好。$ \text{HEFT} $算法可以达到最小的计划长度，但是会大大增加成本。$ DLS $算法还可以实现较小的调度长度，但是它需要更多的云资源成本，因此可以获得最差的$ CMT $值，比我们提出的算法低15％到25％。
+
+![1569480738894](resource/Towards-task-scheduling-in-a-cloud-fog-computing/4.png)
+
+## VI. CONCLUSION
+
+> In this paper, we introduce a cloud-fog computing system which is the combination of fog nodes owned by a fog provider and cloud nodes rented from cloud providers. For the sake of reaping the most benefit from cloud-fog computing system, one must allocate computing tasks strategically at each processing nodes of each layer. We propose a scheduling algorithm which not only guarantees the performance of application execution, but also reduces the mandatory cost for the use of cloud resources. In future, the scheduling algorithm should be made more robust by considering additional constraints, such as fog provider’s budget and deadline constraint of a workflow execution.
+
+在本文中，我们介绍了一种云雾计算系统，该系统是由雾提供商提供的雾节点和从云提供商租用的云节点的组合。为了从云雾计算系统中获得最大收益，必须在每层的每个处理节点上策略性地分配计算任务。我们提出了一种调度算法，该算法不仅可以保证应用程序执行的性能，还可以减少使用云资源的强制性成本。将来，应该通过考虑其他约束（例如模糊提供者的预算和工作流执行的截止期限约束）来使调度算法更可靠。
+
