@@ -328,13 +328,50 @@ $$
 > TAP will then use the $q_i$, $i=1,\dots,N$ to make allocations so that a task is assigned to the host $i$ that corresponds to the highest value of $q_i$. Initially, any one of the hosts will be chosen with equal probability. However with successive updates of the weights, this will change so that TAP selects the “better” hosts which provide a smaller value of $G$.
 >
 > When TAP receives a value $G^t_i$ of the goal function that was measured at time $t$ at host $i$, and $\frac{1}{G_i^t}$ is the “reward”, so that the RNN weights are updated as follows:
+>
+> - We first update a decision threshold $T_l$ as
+>
+> $$
+> T \leftarrow \alpha T+(1-\alpha)\frac{1}{G_i^t} \quad (8)
+> $$
+>
+> where $0 < \alpha < 1$ is a parameter used to vary the relative importance of “past history”.
+>
+> - Then, if $G^t_i < T$, it is considered that the advice provided by the RNN in the past was successful and TAP updates the weights as follows:
+> $$
+> w^{+}(j, i) \leftarrow w^{+}(j, i)+\frac{1}{G_{i}^{t}} \\
+> w^{-}(j, k) \leftarrow w^{-}(j, k)+\frac{1}{G_{i}^{t}(N-2)},\text{if} \quad k\ne i
+> $$
+>
+> - else if $G^t_i>T$
+>
+> $$
+> w^{+}(j, k) \leftarrow  w^{+}(j, k)+\frac{1}{G_{i}^{t}(N-2)}, \quad \text { if } k \neq i \\
+> w^{-}(j, i) \leftarrow w^{-}(i, j)+\frac{1}{G_{i}^{t}}
+> $$
+>
 
 TAP然后会使用 $q_i$, $i=1,\dots,N$ 来分配，所以任务会被分配到对应的$q_i$值最大的主机$i$上。一开始，将以相同的概率选择任何一个主机。然而，随着权重的连续更新，这将被改变，以便TAP选择“更好”的主机，即$G$更小的那个。
 
 当TAP收到目标函数$G_i^t$的值，即主机$i$在时刻$t$被测量的那个，并且$\frac{1}{G_i^t}$被当成“奖励”，以便RNN的权重如下进行更新：
-$$
-\begin{array}{l}{w^{+}(j, i) \leftarrow w^{+}(j, i)+\frac{1}{G_{i}^{t}}} \\ {w^{-}(j, k) \leftarrow w^{-}(j, k)+\frac{1}{G_{i}^{t}(N-2)}, \quad \text { if } k \neq i} \\ {\text { else if } G_{i}^{t}>T} \\ {w^{+}(j, k) \leftarrow ; w^{+}(j, k)+\frac{1}{G_{i}^{t}(N-2)}, \quad \text { if } k \neq i} \\ {w^{-}(j, i) \leftarrow w^{-}(i, j)+\frac{1}{G_{i}^{t}}}\end{array}
-$$
+
+- 我们首先将决策阈值$ T_l $更新为
+  $$
+  T \leftarrow \alpha T+(1-\alpha)\frac{1}{G_i^t} \quad (8)
+  $$
+  其中$ 0 <\alpha <1 $是用于更改“过去历史”的相对重要性的参数。
+
+- 然后，如果$ G ^ t_i <T $，则认为RNN过去提供的建议是成功的，并且TAP如下更新权重：
+
+  $$
+  w^{+}(j, i) \leftarrow w^{+}(j, i)+\frac{1}{G_{i}^{t}} \\ w^{-}(j,   k) \leftarrow w^{-}(j, k)+\frac{1}{G_{i}^{t}(N-2)},\quad \text{ if }  k\ne i
+  $$
+  
+- 否则如果$G^t_i>T$ 
+  $$
+  w^{+}(j, k) \leftarrow  w^{+}(j, k)+\frac{1}{G_{i}^{t}(N-2)}, \quad \text { if } k \neq i \\ w^{-}(j, i) \leftarrow w^{-}(i, j)+\frac{1}{G_{i}^{t}}
+  $$
+  
 
 > We compute $r^{*}(i)=\sum_{k=1}^{N}\left[w^{+}(i, k)+w^{-}(i, k)\right]$ for all $i$ and renormalise all weights so that their values do not grow indefinitely:
 > $$
