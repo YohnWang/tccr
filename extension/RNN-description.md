@@ -8,7 +8,23 @@
 
 > For better illustration, Figure 1 presents the schematic representation of the RNN system. Excitatory spikes arrive at the $l\text{-th}$ neuron from the outside world according to Poisson processes of rate $Λ_l$, which means that the probability that there are $ρ$ excitatory spike arrivals in time interval $Δt$ is [87]: $Prob(ρ \ \text{spike arrivals in interval} \ Δt) = (Λ_l Δt)^ρe^{−ΛlΔt}/ρ!$, where $ρ$ is a non-negative integer. In addition, the rate of inhibitory Poisson spike arrivals from the outside world to the $l\text{-th}$ neuron is $λ_l$. When the $l\text{-th}$ neuron is excited, it may fire excitatory or inhibitory spikes toward other neurons with the inter-firing interval $\bar{\rho}$ being exponentially distributed, which means that the probability density function of $\bar{ρ}$ is $\text{Prob}(\bar{ρ} = Δt) = r_le^{−r_lΔt}$, where $r_l$ is the firing rate of the $l\text{-th}$ neuron. When the $l\text{-th}$ neuron fires a spike, its potential is decreased by 1. The fired spike heads for the $\hat{l}\text{-th}$ neuron as an excitatory spike with probability $p^+_{l,\hat{l}}$ or as an inhibitory spike with probability $p^-_{l,\hat{l}}$ , or it departs from the network/system with probability $ν_l$. The summation of these probabilities is 1: $\sum^L_{\hat{l} =1}(p^+_{l,\hat l} + p^−_{l,\hat l} ) + ν_l = 1$.
 
-为了更好地说明，图1给出了RNN系统的示意图。兴奋性峰值根据速率$Λ_l$的泊松过程从外部世界到达$ l \text {-th} $个神经元，这意味着在时间间隔$Δt$中$ρ$兴奋性峰值到达的概率为[87]：$Prob(ρ \ \text{spike arrivals in interval} \ Δt) = (Λ_l Δt)^ρe^{−ΛlΔt}/ρ!$，其中$ρ$是一个非负整数。另外，抑制性泊松脉冲从外部到达$ l \text{-th} $神经元的速率为$λ_l$。 当第$l$个神经元兴奋时，他可能会以间隔为$\bar{\rho}$的指数分布发射兴奋或抑制脉冲到其他神经元，这意味着$\bar{\rho}$的概率密度函数是$\text{Prob}(\bar{ρ} = Δt) = r_le^{−r_lΔt}$，其中$r_l$是第$l$个神经元的发射率。当第l个神经元发射脉冲，他的潜力将减1。发射脉冲到第$\hat{l}$个神经元作为兴奋脉冲，概率$p^+_{l,\hat{l}}$，或作为抑制脉冲，概率$p^-_{l,\hat{l}}$，或者它以概率$ν_l$离开这个网络/系统。这些概率的总和是1：$\sum^L_{\hat{l} =1}(p^+_{l,\hat l} + p^−_{l,\hat l} ) + ν_l = 1$
+为了更好地说明，图1给出了RNN系统的示意图。兴奋性峰值根据速率$Λ_l$的泊松过程从外部世界到达$ l \text {-th} $个神经元，这意味着在时间间隔$Δt$中$ρ$个兴奋性峰值到达的概率为[87]：$Prob(ρ \ \text{spike arrivals in interval} \ Δt) = (Λ_l Δt)^ρe^{−ΛlΔt}/ρ!$，其中$ρ$是一个非负整数。另外，抑制性泊松脉冲从外部到达$ l \text{-th} $神经元的速率为$λ_l$。 当第$l$个神经元兴奋时，他可能会以间隔为$\bar{\rho}$的指数分布发射兴奋或抑制脉冲到其他神经元，这意味着$\bar{\rho}$的概率密度函数是$\text{Prob}(\bar{ρ} = Δt) = r_le^{−r_lΔt}$，其中$r_l$是第$l$个神经元的发射率。当第$l$个神经元发射脉冲，他的潜力将减1。发射脉冲到第$\hat{l}$个神经元作为兴奋脉冲，概率$p^+_{l,\hat{l}}$，或作为抑制脉冲，概率$p^-_{l,\hat{l}}$，或者它以概率$ν_l$离开这个网络/系统。这些概率的总和是1：$\sum^L_{\hat{l} =1}(p^+_{l,\hat l} + p^−_{l,\hat l} ) + ν_l = 1$
+
+![1569755874804](RNN.png)
+
+-----
+
+注：
+
+上述的公式即为泊松过程，设$N(t)$表示时间$time \in [0,t]$内发生时间的次数，那么对于任意时刻$s$泊松过程即为：
+$$
+P(N(t+s)-N(s)=k)=\frac{(\lambda t)^{k}e^{-\lambda t}}{k!}
+$$
+其中，时间间隔$t$内事件发生个数服从均值为$\lambda t$泊松分布，
+
+$\lambda$ 是泊松过程的速率，或称单位时间内事件发生的平均次数
+
+-----
 
 > Evidently, the potentials of the $L$ neurons in the system are dynamically changing over time due to the stochastic spikes and firing events. Let $\text{Prob}(k_l(t) > 0)$ denote the probability that the $l\text{-th}$ neuron is excited at time $t$. Accordingly, let $q_l =\lim_{t\rightarrow\infin} Prob(k_l(t) > 0)$ denote stationary excitation probability of the $l\text{-th}$ neuron. Due to the stochastic and distributed nature of the behaviors of the whole spiking neural system, it is difficult to obtain the value of $q_l$. For a system with fixed configurations and inputs, a straightforward method is to estimate the value of $q_l$ by using the Monte Carlo method. However, this method may not enable us to obtain a good estimation of $q_l$ or be applicable when the number of neurons becomes very large.
 
@@ -31,4 +47,5 @@ $$
 
 > The RNN’s approximation property shows that it is a function approximator with the universal approximation property (UAP). In particular, in [74,75,78], it is shown that, for any continuous real-valued and bounded function $f(X) : [0, 1]1×N → \mathbb{R}$, there exists an RNN that approximates $f(X) $ uniformly on $[0, 1]^{1×N}$. The work in [157] presents a constructive proof for this UAP theorem that lays a theoretical basis for the learning capability of the RNN and its capability for DL. The RNN function approximator is demonstrated to have a lower computational complexity than the orthogonal–polynomial function approximator in [163] and the one-hidden-layer MLP. The RNN function approximator, equipped with the proposed configuration/learning procedure, is then applied as a tool for solving patternclassification problems. Numerical experiments on various datasets demonstrate that the RNN classifier is more efficient than the Chebyshev-polynomial neural network [163], ELM [94], MLP equipped with the Levenberg–Marquardt (LM) algorithm, radial-basis-function neural networks [152,160], and support vector machine [24].
 
-RNN的逼近属性表明它是具有通用逼近属性（UAP）的函数逼近器。特别是，在[74,75,78]中，对于任何连续的实值和有界函数$f(X) : [0, 1]1×N → \mathbb{R}$，存在在$ [0，1] ^ {1×N} $上均匀地近似$ f(X)$的RNN。[157]中的工作为该UAP定理提供了建设性的证明，为RNN的学习能力及其DL的能力奠定了理论基础。与[163]和单层MLP中的正交多项式函数逼近器相比，RNN函数逼近器具有更低的计算复杂度。然后，将配备有建议的配置/学习过程的RNN函数逼近器用作解决模式分类问题的工具。在各种数据集上的数值实验表明，RNN分类器比配备了Levenberg-Marquardt（LM）算法，径向基函数神经网络的Chebyshev多项式神经网络[163]，ELM [94]，MLP更有效。]和支持向量机[24]。
+RNN的逼近属性表明它是具有通用逼近属性（UAP）的函数逼近器。特别是，在[74,75,78]中，对于任何连续的实值和有界函数$f(X) : [0, 1]1×N → \mathbb{R}$，存在在$ [0,1] ^ {1×N} $上均匀地近似$ f(X)$的RNN。[157]中的工作为该UAP定理提供了建设性的证明，为RNN的学习能力及其DL的能力奠定了理论基础。与[163]和单层MLP中的正交多项式函数逼近器相比，RNN函数逼近器具有更低的计算复杂度。然后，将配备有建议的配置/学习过程的RNN函数逼近器用作解决模式分类问题的工具。在各种数据集上的数值实验表明，RNN分类器比 Chebyshev多项式神经网络[163]，ELM [94]，配备了 Levenberg–Marquardt (LM)算法的MLP，径向基函数神经网络，以及支持向量机[24]更有效。
+
