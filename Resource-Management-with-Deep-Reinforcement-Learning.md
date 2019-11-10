@@ -104,7 +104,7 @@ $$
 
 我们考虑具有$ d $种资源类型（例如，CPU，内存，I / O）的集群。作业以离散的时间步长以在线方式到达集群。调度程序在每个时间步选择一个或多个等待作业进行调度。类似于先前的工作[17]，我们假设到达时知道每个工作的资源需求；更具体地说，每个作业$ j $的资源配置文件由的资源需求向量$ \mathbf{r}_{j}=\left(r_{j, 1}, \ldots, r_{j, d}\right)$给出，以及$ T_j $ –作业的*持续时间*。为简单起见，我们假设没有抢占和固定的分配配置文件（即没有延展性），在这个意义上，$\mathbf{r}_j$从作业开始执行到完成为止，必须连续分配。此外，我们将集群视为资源的单个集合，而忽略了机器碎片的影响。尽管这些方面对于实际的作业调度程序很重要，但此较简单的模型捕获了多资源调度程序的基本要素，并为研究RL方法在此领域的有效性提供了重要的设置。我们将在§5中讨论如何使模型更加实际。
 
-**目标。**我们将平均作业减速情况作为主要系统目标。正式地，对于每个作业$ j $，减速由$ S_j = C_j = T_j $给出；其中$ C_j $是作业的完成时间（即到达和完成执行之间的时间），而$ T_j $是作业的（理想）持续时间；注意$ S_j \ge 1 $。根据工作时间对完成时间进行归一化可以防止将解决方案偏向大型工作，这可能会发生在诸如平均完成时间之类的目标上。
+**目标.**我们将平均作业减速情况作为主要系统目标。正式地，对于每个作业$ j $，减速由$ S_j = C_j = T_j $给出；其中$ C_j $是作业的完成时间（即到达和完成执行之间的时间），而$ T_j $是作业的（理想）持续时间；注意$ S_j \ge 1 $。根据工作时间对完成时间进行归一化可以防止将解决方案偏向大型工作，这可能会发生在诸如平均完成时间之类的目标上。
 
 ### 3.2 RL formulation
 
@@ -112,7 +112,7 @@ $$
 >
 > Ideally, we would have as many job slot images in the state as there are jobs waiting for service. However, it is desirable to have a fixed state representation so that it can be applied as input to a neural network. Hence, we maintain images for only the first $M$ jobs to arrive (which have not yet been scheduled). The information about any jobs beyond the first $M$ is summarized in the *backlog* component of the state, which simply counts the number of such jobs. Intuitively, it is sufficient to restrict attention to the earlier-arriving jobs because plausible policies are likely to prefer jobs that have been waiting longer. This approach also has the added advantage of constraining the action space (see below) which makes the learning process more efficient.
 
-**状态空间。**我们将系统状态（集群资源的当前分配以及等待调度的作业的资源配置文件）表示为不同的图像（请参见图2）。群集图像（每个资源一个图像；图中最左边的两个图像）显示了从当前时间段开始，到未来的$ T $时间步长，将每个资源分配给已计划服务的作业。这些图像中不同的颜色代表不同的工作。例如，图2中的红色作业计划在接下来的三个时间步使用两个CPU单元和一个内存单元。作业插槽图像代表等待作业的资源需求。例如，在图2中，插槽1中的作业具有两个时间步长，其中需要两个CPU单元和一个内存单元。
+**状态空间.**我们将系统状态（集群资源的当前分配以及等待调度的作业的资源配置文件）表示为不同的图像（请参见图2）。群集图像（每个资源一个图像；图中最左边的两个图像）显示了从当前时间段开始，到未来的$ T $时间步长，将每个资源分配给已计划服务的作业。这些图像中不同的颜色代表不同的工作。例如，图2中的红色作业计划在接下来的三个时间步使用两个CPU单元和一个内存单元。作业插槽图像代表等待作业的资源需求。例如，在图2中，插槽1中的作业具有两个时间步长，其中需要两个CPU单元和一个内存单元。
 
 理想情况下，状态中的作业槽位映像数量与等待服务的作业数量一样多。但是，希望具有固定状态表示，以便可以将其用作神经网络的输入。因此，我们仅维护要到达的第一个$ M $作业的图像（尚未计划）。状态的*backlog*部分汇总了除第一个$ M $之外的任何作业的信息，该信息仅计算此类作业的数量。从直觉上讲，将注意力集中在较早到达的工作上就足够了，因为合理的政策可能更喜欢等待时间更长的工作。这种方法还具有限制动作空间（参见下文）的附加优势，这使学习过程更加有效。
 
@@ -124,7 +124,7 @@ $$
 
 > **Rewards.** We craft the reward signal to guide the agent towards good solutions for our objective: minimizing average slowdown. Specifically, we set the reward at each timestep to$\sum_{j \in \mathcal{J} } \frac{-1}{T_{j} }$ , where $\mathcal J$ is the set of jobs currently in the system (either scheduled or waiting for service). The agent does not receive any reward for intermediate decisions during a timestep (see above). Observe that setting the discount factor  $\gamma = 1$, the cumulative reward over time coincides with (negative) the sum of job slowdowns, hence maximizing the cumulative reward mimics minimizing the average slowdown.
 
-**奖励。**我们会制定奖励信号，以指导代理为我们的目标找到好的解决方案：最小化平均下降速度。具体来说，我们将每个时间步长的奖励设置为$\sum_{j \in \mathcal{J} } \frac{-1}{T_{j} }$，其中$ \mathcal J $是当前在系统中的作业集合（已调度或正在等待服务）。在某个时间步长中，代理不会因中间决策而获得任何奖励（请参见上文）。观察到，设置折扣因子$ \gamma = 1 $，随时间的累积奖励与作业下降速度的总和（负）重合，因此最大化累积奖励可以使平均下降速度最小化。
+**奖励.**我们会制定奖励信号，以指导代理为我们的目标找到好的解决方案：最小化平均下降速度。具体来说，我们将每个时间步长的奖励设置为$\sum_{j \in \mathcal{J} } \frac{-1}{T_{j} }$，其中$ \mathcal J $是当前在系统中的作业集合（已调度或正在等待服务）。在某个时间步长中，代理不会因中间决策而获得任何奖励（请参见上文）。观察到，设置折扣因子$ \gamma = 1 $，随时间的累积奖励与作业下降速度的总和（负）重合，因此最大化累积奖励可以使平均下降速度最小化。
 
 ### 3.3 Training algorithm
 
@@ -166,7 +166,7 @@ RL公式可以调整以实现其他目标。例如，为了最小化平均完成
 
 > **Workload.** We mimic the setup described in §3.1. Specifically, jobs arrive online according to a Bernoulli process. The average job arrival rate is chosen such that the average load varies between 10% to 190% of cluster capacity. We assume two resources, i.e., with capacity $\{1r,1r\}$. Job durations and resource demands are chosen as follows: 80% of the jobs have duration uniformly chosen between $1t$ and $3t$; the remaining are chosen uniformly from $10t$ to $15t$. Each job has a dominant resource which is picked independently at random. The demand for the dominant resource is chosen uniformly between $0.25r$ and $0.5r$ and the demand of the other resource is chosen uniformly between $0.05r$ and $0.1r$.
 
-**工作量。**我们模仿第3.1节中所述的设置。具体来说，工作是根据伯努利过程在线到达的。选择平均作业到达率，以使平均负载在群集容量的10％到190％之间变化。我们假设两个资源，即容量为$ \{1r，1r \} $。工作时间和资源需求的选择如下：80％的工作时间在$ 1t $和$ 3t $之间均匀选择；其余的从$ 10t $到$ 15t $统一选择。每个工作都有一个主导资源，该资源是随机独立选择的。对主导资源的需求在$ 0.25r $和$ 0.5r $之间统一选择，而其他资源的需求在$ 0.05r $和$ 0.1r $之间统一选择。
+**工作量.**我们模仿第3.1节中所述的设置。具体来说，工作是根据伯努利过程在线到达的。选择平均作业到达率，以使平均负载在群集容量的10％到190％之间变化。我们假设两个资源，即容量为$ \{1r，1r \} $。工作时间和资源需求的选择如下：80％的工作时间在$ 1t $和$ 3t $之间均匀选择；其余的从$ 10t $到$ 15t $统一选择。每个工作都有一个主导资源，该资源是随机独立选择的。对主导资源的需求在$ 0.25r $和$ 0.5r $之间统一选择，而其他资源的需求在$ 0.05r $和$ 0.1r $之间统一选择。
 
 > **DeepRM.** We built the DeepRM prototype described in §3 using a neural network with a fully connected hidden layer with 20 neurons, and a total of 89,451 parameters. The “images” used by the DeepRM agent are $20t$ long and each experiment lasts for $50t$. Recall that the agent allocates from a subset of $M$ jobs (we use $M = 10$) but can also observe the number of other jobs (“backlog” which we set to 60 jobs). We use 100 different jobsets during training. In each training iteration, per jobset we run $N = 20$ Monte Carlo simulations in parallel. We update the policy network parameters using the rmsprop [21] algorithm with a learning rate of 0.001. Unless otherwise specified, the results below are from training DeepRM for 1000 training iterations.
 
