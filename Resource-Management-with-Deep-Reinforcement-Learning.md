@@ -186,9 +186,13 @@ RL公式可以调整以实现其他目标。例如，为了最小化平均完成
 
 图4绘制了DeepRM与其他方案在不同负载水平下的平均作业速度降低情况。每个数据点平均超过100个新实验，而训练期间未使用这些工作集。正如预期的那样，我们看到（1）平均速度随着群集负载的增加而增加；（2）SJF的性能优于Packer，因为它首先分配了较小的作业，并且（3）Tetris通过结合它们的优势胜过两种启发式方法。该图还显示，DeepRM可与所有启发式算法相媲美，并且往往优于所有启发式方法。正如我们将很快看到的那样，DeepRM在较高的负载下击败了Tetris，因为它会自动学习以保持一些资源的空闲状态，以便可以快速安排在不久的将来到达的小型作业。在俄罗斯方块中，小型作业有时可能要等到一个（大型）现有作业完成后才能执行，因为俄罗斯方块会强制执行工作保护，当无法抢占工作时，这可能并不总是最佳策略。值得注意的是，DeepRM能够直接从经验中学习此类策略，而无需事先知道哪种策略适用（例如，青睐较短的工作）。
 
+![4](resource/Resource-Management-with-Deep-Reinforcement-Learning/4.png)
+
 > **Other objectives.** Figure 5 shows the behavior for two objectives (average job slowdown and average job completion time) when the cluster is highly loaded (load=130%). Recall that DeepRM uses a different reward function for each objective ($-|\mathcal{J}|$ to optimize average job completion time, and $\sum_{j \in \mathcal{J} \frac{-1}{T_j}}$ for average job slowdown; see x3.4). As before we see that Tetris  outperforms the other heuristics. However, DeepRM is the best performing scheme on each objective when trained specifically to optimize for that objective with the appropriate reward function. Thus DeepRM is customizable for different objectives.
 
 **其他目标.** 图5显示了群集高度负载（负载= 130％）时两个目标的行为（平均作业减速和平均作业完成时间）。回想一下，DeepRM为每个目标使用不同的奖励函数（$-|\mathcal{J}|$优化平均作业完成时间，$\sum_{j \in \mathcal{J} \frac{-1}{T_j}}$用于平均作业减速；参考3.4节）。如前所述，Tetris优于其他启发式算法。但是，经过专门培训以使用适当的奖励功能针对该目标进行优化时，DeepRM是针对每个目标的最佳性能方案。因此，DeepRM可针对不同目标进行定制。
+
+![5](resource/Resource-Management-with-Deep-Reinforcement-Learning/5.png)
 
 ### 4.3 Understanding convergence and gains
 
@@ -204,10 +208,14 @@ RL公式可以调整以实现其他目标。例如，为了最小化平均完成
 
 到目前为止，我们已经测量了迭代次数，但是一次迭代要花多长时间？我们的多线程实现在24核CPU服务器上每次迭代花费了80秒。卸载到GPU服务器可以进一步加快该过程[10，2]。最后，请注意，该策略只需训练一次；仅当环境（集群或工作负载）发生显着变化时才需要重新训练。
 
+![6](resource/Resource-Management-with-Deep-Reinforcement-Learning/6.png)
+
 > Where are the gains from? To understand why DeepRM performs better, we examine the case with load 110%. Recall that, unlike the other schemes, DeepRM is not workconserving, i.e., it can hold a job even if there are enough resources available to allocate it. We found that in 23:4% of timesteps in this scenario, DeepRM was not work-conserving. Whenever DeepRM withholds a job, we record its length, and plot the distribution of the length of such jobs in Figure 7(a). We see that DeepRM almost always withholds only large jobs. The effect is to make room for yet-to-arrive small jobs. This is evident in Figure 7(b): the slowdown for small jobs is significantly smaller with DeepRM than Tetris?, with the tradeoff being higher slowdown for large jobs. Since in this workload (x4.1), there are 4 more small jobs than large jobs, the optimal strategy to minimize average job slowdown (Figure 4) in a heavy load is to keep some resources free so that newly arriving small jobs can be immediately allocated.
 > DeepRM learns such a strategy automatically.
 
 从哪里获得收益？要了解DeepRM为什么表现更好，我们检查负载为110％的情况。回想一下，与其他方案不同，DeepRM不能保持工作状态，即即使有足够的资源来分配作业，它也可以保留作业。我们发现，在这种情况下，在23：4％的时间步长中，DeepRM不能保持工作。每当DeepRM保留作业时，我们都会记录其长度，并在图7（a）中绘制此类作业的长度分布。我们看到，DeepRM几乎总是只保留大量工作。结果是为尚未完成的小工作腾出了空间。这在图7（b）中很明显：DeepRM的小型作业的速度要比Tetris？小得多，而权衡是大型作业的速度要高。由于在此工作负载（x4.1）中，小型作业比大型作业多4个，因此在重负载下最大程度地减少平均作业减速的最佳策略（图4）是保持一些资源可用，以便新到的小型作业可以 立即分配。DeepRM会自动学习这种策略。
+
+![7](resource/Resource-Management-with-Deep-Reinforcement-Learning/7.png)
 
 ## 5. DISCUSSION
 
