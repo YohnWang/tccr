@@ -76,7 +76,7 @@
 > $$
 > Here, $Q^{\pi\theta}(s,a)$ is the expected cumulative discounted reward from (deterministically) choosing action $a$ in state $s$, and subsequently following policy $\pi_\theta$. The key idea in policy gradient methods is to estimate the gradient by observing the trajectories of executions that are obtained by following the policy. In the simple Monte Carlo Method [19], the agent samples multiple trajectories and uses the empirically computed cumulative discounted reward, $v_t$, as an unbiased estimate of $Q^{\pi\theta}(s_t,a_t)$. It then updates the policy parameters via gradient descent:
 > $$
-> \theta \leftarrow \theta+\alpha \sum_{t} \nabla_{\theta} \log \pi_{\theta}\left(s_{t}, a_{t}\right) v_{t} \tag{2}
+> \theta \leftarrow \theta+\alpha \sum_{t} \nabla_{\theta} \log \pi_{\theta}\left(s_{t}, a_{t}\right) v_{t} 
 > $$
 > where $\alpha$ is the step size. This equation results in the well-known REINFORCE algorithm [35], and can be intuitively understood as follows. The direction $\nabla_{\theta} \log \pi_{\theta}\left(s_{t}, a_{t}\right)$ gives how to change the policy parameters in order to increase $\pi_\theta(s_t,a_t)$ (the probability of action $a_t$ at state $s_t$). Equation 2 takes a step in this direction; the size of the step depends on how large is the return $v_t$. The net effect is to reinforce actions that empirically lead to better returns. In our design, we use a slight variant [32] that reduces the variance of the gradient estimates by subtracting a baseline value from each return $v_t$. More details follow.
 
