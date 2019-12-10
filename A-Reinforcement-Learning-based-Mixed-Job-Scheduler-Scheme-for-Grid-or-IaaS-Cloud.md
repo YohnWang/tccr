@@ -89,7 +89,7 @@
 
 ## IV. JOB SCHEDULING MECHANISM
 
-> 4.1 Concept Description
+> ### 4.1 Concept Description
 >
 > In order to facilitate the subsequent description, the relevant concepts of this job scheduling scheme are described as follow.
 >
@@ -160,7 +160,7 @@ $ VM_j.avai $表示在将$ job_i $调度到$ VM_j $资源后接收下一个作�
 >
 > More generally, assuming that each job has $l$ attributes, probably including bandwidth, memory, CPU, etc, the set of all jobs depicted as matrix $\mathbf{J}$ is
 > $$
-> J=\left\{\begin{array}{lll}{j o b_{1}, a tt_{1}} & {j o b_{1} . a t t_{2}} & {\dots} & {j o b_{1} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{i} \cdot a t t_{1}} & {j o b_{i} \cdot a t t_{2}} & {\dots} & {j o b_{i} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{n} \cdot a t_{1}} & {j o b_{n} \cdot a t t_{2}} & {\dots} & {j o b_{n} \cdot a t t_{l}}\end{array}\right\}
+> J=\left\{\begin{array}{lll}{j o b_{1}. a tt_{1}} & {j o b_{1} . a t t_{2}} & {\dots} & {j o b_{1} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{i} \cdot a t t_{1}} & {j o b_{i} \cdot a t t_{2}} & {\dots} & {j o b_{i} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{n} \cdot a t_{1}} & {j o b_{n} \cdot a t t_{2}} & {\dots} & {j o b_{n} \cdot a t t_{l}}\end{array}\right\}
 > $$
 > Likewise, assuming that each VM has $l$ attributes, the set of all VMs depicted as matrix $VM$ is
 > $$
@@ -176,7 +176,7 @@ $ VM_j.avai $表示在将$ job_i $调度到$ VM_j $资源后接收下一个作�
 
 更笼统地说，假设每个作业具有$ l $属性，可能包括带宽，内存，CPU等，则描述为矩阵$ \mathbf {J} $的所有作业的集合为
 $$
-J=\left\{\begin{array}{lll}{j o b_{1}, a tt_{1}} & {j o b_{1} . a t t_{2}} & {\dots} & {j o b_{1} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{i} \cdot a t t_{1}} & {j o b_{i} \cdot a t t_{2}} & {\dots} & {j o b_{i} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{n} \cdot a t_{1}} & {j o b_{n} \cdot a t t_{2}} & {\dots} & {j o b_{n} \cdot a t t_{l}}\end{array}\right\}
+J=\left\{\begin{array}{lll}{j o b_{1}. a tt_{1}} & {j o b_{1} . a t t_{2}} & {\dots} & {j o b_{1} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{i} \cdot a t t_{1}} & {j o b_{i} \cdot a t t_{2}} & {\dots} & {j o b_{i} \cdot a t t_{l}} \\ {\vdots} & {\vdots} & {\vdots} \\ {j o b_{n} \cdot a t_{1}} & {j o b_{n} \cdot a t t_{2}} & {\dots} & {j o b_{n} \cdot a t t_{l}}\end{array}\right\}
 $$
 同样，假设每个VM具有$ l $属性，则表示为矩阵$ VM $的所有VM的集合为
 $$
@@ -218,3 +218,105 @@ $$
 W T\left(j o b_{i}, V M_{j}\right)=\operatorname{start}\left(j o b_{i}, V M_{j}\right)-\text { submit }\left(j o b_{i}, V M_{j}\right)
 $$
 平均等待时间是所有作业等待时间的数学期望，它反映了作业等待时间的平均水平。它也是系统性能评估的标准之一[23]。
+
+> ### 4.2 Job scheduling Scheme
+>
+> As defined in section 4.1, the concepts such as state space, action space, immediate reward function denoted as S, A, and $r(s, a)$ respectively, can also be described as follows.
+
+4.2 作业调度方案
+
+如第4.1节所定义，状态空间，动作空间，分别表示为$S$，$A$和$r（s，a）$的即时奖励函数等概念也可以描述如下。
+
+> State space. In this study, the number of available VMs for the jobs in cloud computing platform can be defined as state space. For instance, assuming that there are m active virtual machines in the current cloud computing platforms, state space can be represented by a vector in the form as:$s_i=(s_1,s_2,...,s_m)\in S$,where $s_j$ express $j^{th}$ VM. Theoretically, as long as the value of $jud(job_i,VM_j)$  is 1, the job can be assigned to any virtual machine which meets the resource constraints in the system, the current state of the system at the moment is merely relevant to the previous state. Hence the job scheduling problem can be cast as a MDP and the state transition probability diagram of cloud computing platform is shown in Fig. 2.
+
+状态空间。在这项研究中，可以将云计算平台中作业可用的VM数量定义为状态空间。例如，假设当前的云计算平台中有m个活动虚拟机，则状态空间可以用以下形式的向量表示：$ s_i =（s_1，s_2，...，s_m）\in S $，其中$ s_j $表示$ j ^ {th} $个VM。从理论上讲，只要$ jud（job_i，VM_j）$的值为1，就可以将作业分配给任何满足系统资源限制的虚拟机，此时系统的当前状态仅与以前的状态。因此，可以将作业调度问题转换为MDP，而云计算平台的状态转移概率图如图2所示。
+
+![2](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/2.png)
+
+> Action space. For each user job, the action set can be described as (0/1), which means the current user job (reject/receive) by a certain VM. For example, if $i^{th}$ user job is assented to $j^{th}$ VM, the action space of $i^{th}$ user job can be represented by a vector in the form of $a_i=(0,0,1,0...,0) \in A$, which indicates current user job ( $i^{th}$ user job) is assigned to $3^{th}$ VM.
+
+动作空间。对于每个用户作业，动作集可以描述为（0/1），这表示某个VM当前的用户作业（拒绝/接收）。例如，如果将用户作业分配给VM，则用户作业的动作空间可以由形式的向量表示，该向量指示当前用户作业（用户作业）已分配给VM。
+
+> Immediate reward. The immediate reward is used to reflect the system running state and the job scheduling scheme running efficiency.
+>
+> For different job scheduling schemes, the main difference lies in scheduling jobs to various VM resources, so if $job_i$ is assigned to $VM_j$ , we define the $EET(job_i,VM_j)$ as immediate reward $r(job_i,VM_j)$ , we rewrite the Equation (1) as follow:
+> $$
+> r\left(j o b_{i}, V M_{j}\right)=\frac{j o b_{i} \cdot i n i}{V M_{j} \cdot p r o c}+\frac{j o b_{i} \cdot f s i z e}{V M \cdot b w}
+> $$
+
+立即奖励。立即奖励用于反映系统运行状态和作业调度方案的运行效率。
+
+对于不同的作业调度方案，主要区别在于将作业调度到各种VM资源，因此，如果将$ job_i $分配给$ VM_j $，则将$ EET（job_i，VM_j）$定义为即时奖励$ r（job_i，VM_j）$，我们将等式（1）重写为：
+$$
+r\left(j o b_{i}, V M_{j}\right)=\frac{j o b_{i} \cdot i n i}{V M_{j} \cdot p r o c}+\frac{j o b_{i} \cdot f s i z e}{V M \cdot b w}
+$$
+
+> Optimization object function. As for the current batch of user jobs, the issue on job scheduling scheme optimization object function can be defined as
+> $$
+> \begin{align}
+> \DeclareMathOperator*{\Min}{Min}
+> & \Min_{\{awt\}}\Min_{\{mks\}}(Max(VM_i|VM_i\in S)) \\
+> & subject \ to  \\
+> & \quad \quad \quad \sum_{j=1}^m VM_i^j \le deadline
+> \end{align}
+> $$
+
+优化对象函数。对于当前的用户作业批次，可以将作业调度方案优化对象函数的问题定义为
+$$
+\begin{align} \DeclareMathOperator*{\Min}{Min} & \Min_{\{awt\}}\Min_{\{mks\}}(Max(VM_i|VM_i\in S)) \\ & subject \ to  \\ & \quad \quad \quad \sum_{j=1}^m VM_i^j \le deadline \end{align}
+$$
+
+-----
+
+注：
+
+awt表示average waiting time
+
+mks表示makespan
+
+-----
+
+> We employ the $Q$-learning [24] method as our optimization scheduling scheme. By continuous interactions with the environment and tryouts, $Q$-learning evaluates the feedback from the environment to optimize future decision-making. Characterized by on-line learning, modeling-free, with the greatest long-term cumulative reward instead of immediate one, it has become one of the most important methods in reinforcement learning, especially for the learners who know little about the surroundings, and self-adapt to learning in a dynamic, complex environment. In light of the continuously cumulative formats, after each immediate reward $r$ is collected, the mean $Q$-value of an action a on state s, denoted by $Q(s, a)$, can be refined at once:
+> $$
+> Q\left(s_{t}, a_{t}\right)=Q\left(s_{t}, a_{t}\right)+\alpha *\left[r_{t+1}+\gamma * Q\left(s_{t+1}, a_{t+1}\right)-Q\left(s_{t}, a_{t}\right)\right]
+> $$
+> where α is a learning rate parameter that facilitates convergence to the true Q-values in the presence of noisy or stochastic rewards and state transitions [23], and the discount rate is denoted by γ to guarantee the updated reward convergence in continuing job.
+
+我们采用$ Q $ -learning [24]方法作为我们的优化调度方案。通过与环境和测试的持续交互，$ Q $学习评估来自环境的反馈以优化未来的决策。它具有在线学习，无需建模，具有最大的长期累积奖励而不是即时奖励的特点，它已成为强化学习中最重要的方法之一，特别是对于对周围环境和自我知之甚少的学习者而言-适合在动态，复杂的环境中学习。根据连续累积的格式，在收集到每个立即奖励$ r $之后，可以立即细化状态s上的动作a的平均$ Q $值，用$ Q（s，a）$表示：
+$$
+Q\left(s_{t}, a_{t}\right)=Q\left(s_{t}, a_{t}\right)+\alpha *\left[r_{t+1}+\gamma * Q\left(s_{t+1}, a_{t+1}\right)-Q\left(s_{t}, a_{t}\right)\right]
+$$
+其中，$α$是学习率参数，在存在嘈杂或随机奖励以及状态转换的情况下，有助于收敛到真实的Q值[23]，折扣率由$γ$表示，以确保连续工作中更新的奖励收敛。
+
+> The numbers of VMs and user jobs in cloud computing environment are very high, meanwhile the job scheduling problem is a NP hard completed problem, so we employ multi-agent parallel learning to accelerate the job optimization scheduler scheme. The designed internal architecture of the job scheduler is shown in Fig. 3, and the pseudo code of the multi-agent parallel Q-value learning algorithm is illustrated in Algorithm 1.
+
+云计算环境中的虚拟机和用户作业数量很高，同时作业调度问题是一个NP难题，因此，我们采用多智能体并行学习来加速作业优化调度器方案。作业调度程序的设计内部架构如图3所示，而多智能体并行Q值学习算法的伪代码如图1所示。
+
+![3](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/3.png)
+
+![4](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/4.png)
+
+> As shown in Fig. 3 and Algorithm 1, each agent learns the optimal scheduler scheme by employing Q-learning algorithm, and obtains a suboptimal policy when an episode is over. Then each agent updates Q-value table itself according to the estimated results. The suboptimal policy of each agent is estimated by policy estimate model, and obtains wholesituation optimal policy. If the learning progress is not finished, the optimal scheme updates the Q-value table for each agent. This method of updating balances the exploration and exploitation effectively; otherwise, it outputs the optimal policy.
+
+如图3和算法1所示，每个智能体通过采用Q学习算法来学习最佳调度器方案，并在情节结束时获得次优策略。然后，每个代理根据估计结果自己更新Q值表。通过策略估计模型对每个代理的次优策略进行估计，得到总体最优策略。如果学习进度尚未完成，则最佳方案将为每个代理更新Q值表。这种更新方法有效地平衡了勘探和开发；否则，输出最佳策略。
+
+> Based on our preliminary work [25-27], we redesign the agent and the internal architecture of an agent as shown in Fig.4 . The action of each agent is taken depending on the decision of the rule bank, in which user data, history rule, Q-value table and knowledge transferred from other agents are included.
+>
+> By using the job scheduling scheme proposed in this paper, the user job scheduling process is to look up Q-value table, which is built and maintained by Q-learning algorithm, and to make a decision, so the time complexity of the proposed job scheduling in this paper is O(1).
+
+根据我们的初步工作[25-27]，我们重新设计了智能体和智能体的内部架构，如图4所示。根据规则库的决定采取每个智能体的动作，其中包括用户数据，历史记录规则，Q值表和从其他智能体传递来的知识。
+
+通过使用本文提出的作业调度方案，用户作业调度过程是查找由Q学习算法建立和维护的Q值表，并做出决策，因此所提出作业的时间复杂度本文中的调度是O（1）。
+
+## V. EXPERIMENT RESULTS
+
+> To evaluate the efficiency of our approach, implementations have been performed on the simulation and real cloud computing environment, respectively.
+>
+> First, by using numerical analysis function of MATLAB R2012a by MathWorks, Inc.[28], we have developed a discrete event simulator of the cloud server platform. Second, we employ CloudSim Toolkit [29], which is widely regarded as benchmark of cloud computing simulation experiments environment. Third, we construct real cloud computing platform by using physical machines. In our replication experiment, different types of VMs mapped to a physical machine are shown in Fig. 5.
+
+为了评估我们方法的效率，分别在模拟和真实云计算环境上执行了实现。
+
+首先，通过使用MathWorks公司的MATLAB R2012a的数值分析功能[28]，我们开发了云服务器平台的离散事件模拟器。其次，我们使用CloudSim Toolkit [29]，它被广泛认为是云计算仿真实验环境的基准。第三，我们使用物理机构建真正的云计算平台。在我们的复制实验中，图5中显示了映射到物理机的不同类型的VM。
+
+![5](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/5.png)
+
