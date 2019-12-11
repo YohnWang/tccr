@@ -61,7 +61,7 @@
 
 > As we all know, the job scheduling in grid and cloud environment has proven to be an Non-deterministic Polynomial (NP) hard complete problem [6]. Therefore, the optimization goals include optimal makespan, QoS, load balancing, and economic principles. Studies in the literature on this issue are mainly developed from the following aspects:
 
-本文的其余部分安排如下：第二部分讨论一些相关的工作。第三部分介绍了云计算系统模型。第四节对拟议的工作计划方案进行了详细说明。第五节评估了我们方案的性能。第六节总结了论文并讨论了未来的工作。
+众所周知，网格和云环境中的作业调度已被证明是非确定性多项式（NP）的硬性完全问题[6]。因此，优化目标包括最佳制造期，QoS，负载平衡和经济原则。有关此问题的文献研究主要从以下几个方面进行：
 
 > 1) Theoretical research. Theoretical research is usually combined with queuing theory or other statistical theory to construct a mathematical model of cloud computing systems, thus making theoretical analysis on job scheduling scheme. Khazaei, et al.[7] assumed that the service time had independent and identically distributed random variables, then the cloud computing center was modeled as an M/G/m/m+r queuing model. Hence, the probability distribution of the request response time and the relationship between the server number and input buffer size were obtained by embedded Markov chain, and related works had been done [8,9]. Outbreaking the traditional assumption on the known boundaries and job sizes, Maguluri, et al. [10] assumed job sizes were unknown, then presented a load balancing and scheduling algorithm that was to optimize throughput. Focusing on the unpredictable issues in large-scale scientific computing, Shi, et al. [11] designed an elastic resource provisioning and job scheduling algorithm under budget and deadline constraints, and evaluated the algorithm performance with real AMS experimental computing data under different budget constraints.
 
@@ -320,3 +320,122 @@ $$
 
 ![5](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/5.png)
 
+> 5.1 Simulation cloud computing environment experiment results by using MATLAB
+>
+> First, we compared the performance information among the below alternative schemes in our simulations: (1) the proposed job scheduling scheme, denoted by Q-learning, in which the users requested jobs are optimally scheduled to the VMs by parallel Q-learning; (2) Min-min scheduling scheme, in which the finish time of each job in any available VM is calculated, then the job with minimum finish time is selected to be mapped to the corresponding VM; (3) Max-min scheduling scheme, similar to Min-min scheduling scheme, in which the job with maximum finish time is selected to be mapped to the corresponding VM; (4) Fast-fit scheduling scheme, in which jobs are scheduled to the fastest VM; (5) Best-fit scheduling scheme, in which user jobs are scheduled to the best suitable VM, to put off the execution time as long as possible under the deadline constraint. Due to the lots of experiments results and limit of paper length, only the experiment results that the ratio of compute-intensive jobs and data-intensive jobs is 3: 7 are presented in this section. Table I shows the parameter settings for the simulation experiment platform.
+
+5.1使用MATLAB仿真云计算环境的实验结果
+
+首先，我们在仿真中比较了以下替代方案中的性能信息：（1）提出的作业调度方案，以Q学习表示，其中用户请求的作业通过并行Q学习最优地调度到VM。（2）最小-最小调度方案，计算任意可用虚拟机中每个作业的完成时间，然后选择最小完成时间的作业映射到对应的虚拟机；（3）Max-min调度方案，类似于Min-min调度方案，其中选择具有最大完成时间的作业映射到相应的VM；（4）快速配合调度方案，其中将作业调度到最快的VM；（5）最适合的调度方案，在该方案中，将用户作业调度到最适合的VM，以在截止期限约束下尽可能长地推迟执行时间。由于大量的实验结果和论文长度的限制，本节仅介绍计算密集型作业与数据密集型作业之比为3：7的实验结果。表I显示了模拟实验平台的参数设置。
+
+![6](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/6.png)
+
+> A. Statistical Performance Comparison
+>
+> In order to verify the performance of the designed scheme, the average experimental results after 1000 operations are viewed as statistical performance indicators.
+>
+> A comparison of finished job numbers when the deadline varies from 40 to 65 minutes under the same VMs constraint is demonstrated in Fig. 6, from which we can generalize the following conclusions: (1) the finished job number of Q-learning job scheduling schemes increases with the increase of the deadline; and (2) the finished job number of proposed scheduling scheme is greater than other scheduler schemes. The detailed performance comparison such as makespan, AWT, Finished Job Number (FJN), among various job scheduling schemes are shown in table II.
+>
+> Guided by the observation table I, we find that the proposed job scheduling scheme achieved the minimum makespan compared with the other job scheduling schemes.
+
+A.统计性能比较
+
+为了验证所设计方案的性能，将1000次操作后的平均实验结果视为统计性能指标。
+
+在图6中，比较了在相同VM约束下，截止日期从40到65分钟变化的完成作业数量的比较，可以得出以下结论：（1）Q学习作业调度方案的完成作业数量。随着期限的增加而增加；（2）所提出的调度方案的完成工作数量大于其他调度方案。表II中显示了各种作业调度方案之间的详细性能比较，例如制造时间，AWT，完成的作业编号（FJN）。
+
+在观察表I的指导下，我们发现与其他作业调度方案相比，所提出的作业调度方案实现了最小的构建时间。
+
+![7](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/7.png)
+
+> B. Run-time Performance Comparison
+>
+> To further compare the performance of various schemes, we analyze the execution results of a randomly-selected batch jobs, under the deadline constraint of 55 minutes. The experimental results are shown in Fig. 7.
+
+B.运行时性能比较
+
+为了进一步比较各种方案的性能，我们在55分钟的截止时间约束下分析了一个随机选择的批处理作业的执行结果。实验结果如图7所示。
+
+![8](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/8.png)
+
+> Fig. 7 gives a close look into the performance index in the five schemes under deadline and VM resource constraints.From the simulation comparison results, we gain further insights into the reasons behind Fig. 6.
+>
+> Essentially Min-Min algorithm is a greedy algorithm, which iteratively assigns tasks to the appropriate resources for implementation. Each iteration selects a minimum task with minimum completion time from the tasks to be scheduled, and dispatches it to the corresponding host, aiming to give priority to assigning the smaller tasks with a shorter execution time to the fastest hosts with earliest completion, in order to reduce the number of tasks to be scheduled in the collection within the possible shortest time. In the application of Min-Min scheduling algorithm, because a job with the minimum change in the host is selected for task scheduling each time, the time needed to start for job execution is relatively shorter, thus the Min-Min algorithm obtains less waiting time for tasks. However, Min-Min scheduling algorithm uses completion time as a criterion for the order of task scheduling. If it displays a higher processing capability than the others, a few nodes in the resource pool are under excessive load. As a result, the high-performance nodes are overloaded, while the others with lower processing capability are not made good use of, eventually leading to an unsatisfactory makespan. Max-Min algorithm dispatches a task with a relatively longer execution time to the host with the minimum completion time, thus improving the parallel rate of large tasks and small ones, obtaining a higher load balance, and ultimately condensing the makespan. Fast-fit attempts to schedule jobs to the fastest VM, whose algorithm performance is similar to that of Min-Min scheduling scheme. Best-fit scheduling scheme tries to schedule jobs to the suitable VM. That is to say, it puts off the finish time as long as possible under the deadline constraint, resulting in poor performance in terms of makespan. Our scheme approaches to make full use of various virtual machine resources, shortening the deadline effectively.
+>
+> Conclusion, although Fast-fit, Best-fit, Min-min and Max-min belong to different kinds of scheduling schemes, the execution results of these schemes, can allocate running time and workflow among VMs, while they cannot adjust the utilization rate and workflow balance dynamically, resulting in a higher makespan and AWT time. In contrast, the proposed scheme balances the exploration and exploitation in multiagent learning progress, avoids the situation of shorter job with longer waiting time, thus to improve the system performance.
+
+图7仔细研究了5个方案在截止日期和VM资源约束下的性能指标，从仿真比较结果中我们可以进一步了解图6背后的原因。
+
+本质上，Min-Min算法是一种贪婪算法，它会反复将任务分配给适当的资源以供实施。每次迭代从要调度的任务中选择一个具有最短完成时间的最小任务，并将其分派给相应的主机，旨在优先将执行时间较短的较小任务分配给最早完成的最快主机，以便在可能的最短时间内减少要在集合中安排的任务数。在Min-Min调度算法的应用中，由于每次都选择主机中变化最小的作业进行任务调度，因此开始执行作业所需的时间相对较短，因此Min-Min算法获得的等待时间更少用于任务。但是，Min-Min调度算法使用完成时间作为任务调度顺序的标准。如果它显示的处理能力高于其他处理能力，则资源池中的几个节点承受的负载过大。结果，高性能节点过载，而其他处理能力较低的节点则没有得到充分利用，最终导致制造期不令人满意。Max-Min算法以最小的完成时间将执行时间相对较长的任务分派给主机，从而提高了大型任务和小型任务的并行率，获得了更高的负载平衡，并最终缩短了工期。快速匹配尝试将作业调度到最快的VM，其算法性能类似于Min-Min调度方案。最适合的调度方案尝试将作业调度到合适的VM。就是说，在截止期限的约束下，它尽可能延长了完成时间，导致生产期性能下降。我们的方案旨在充分利用各种虚拟机资源，有效缩短期限。
+
+结论虽然Fast-fit，Best-fit，Min-min和Max-min属于不同类型的调度方案，但是这些方案的执行结果可以在VM之间分配运行时间和工作流，却无法调整利用率和可用性。动态平衡工作流程，从而延长了制造时间和AWT时间。相比之下，该方案在多智能体学习过程中实现了探索与开发的平衡，避免了工作时间短，等待时间较长的情况，从而提高了系统性能。
+
+> 5.2 Simulation cloud computing environment experiment results by using CloudSim Toolkit
+>
+> Secondary, we employ CloudSim Toolkit [29] as benchmark simulation cloud computing experiments environment, and compare its performance with that of other similar task scheduling algorithms under the same VMs resources constraint. In this section, we first construct a fine-scale cloud computing platform to follow the tracks of user jobs and monitor each VM. Then we extend experiment environment to large scale which approximates the real cloud computing scene and statistical analysis algorithm perform.
+
+5.2使用CloudSim Toolkit模拟云计算环境的实验结果
+
+其次，我们将CloudSim Toolkit [29]作为基准仿真云计算实验环境，并在相同VM资源约束下将其性能与其他类似任务调度算法的性能进行比较。在本节中，我们首先构建一个精细的云计算平台，以跟踪用户作业的轨迹并监视每个VM。然后我们将实验环境扩展到大规模，以逼近真实的云计算场景并执行统计分析算法。
+
+> A. Small-scale cloud platform
+>
+> Configuration details of small-scale cloud computing experiment platform are given in Table III. The experimental results of makespan comparisons and average wait time comparisons are shown in Fig. 8 and Fig. 9 respectively.
+
+A.小型云平台
+
+表III中给出了小型云计算实验平台的配置详细信息。制造期比较和平均等待时间比较的实验结果分别如图8和图9所示。
+
+![9](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/9.png)
+
+> As shown in Fig. 8, the balance of makespan among VMs of proposed task scheduling is better than other scheduling schemes. And the experiment results in Fig. 9 given the similar conclusions, then also demonstrate the superiority of the proposed task scheduling scheme. But due to the disparity among the jobs, the number of completed jobs in each virtual machine in Fig. 8 and Fig. 9 does not fully reflect the operation in each of them, so we list the results of numerical analysis of these operations, and use a variance as an indicator to measure makespan in each virtual machine and estimate whether AWT is balanced. The numerical results are shown in Table IV. As shown in Table IV, compared with the other algorithms, the proposed scheme acquires the minimum variance in makespan and AWT at the same time, reaching 0.98 and 0.35 respectively.
+
+如图8所示，提出的任务调度的VM之间的制造期平衡优于其他调度方案。并且图9中的实验结果给出了相似的结论，然后也证明了所提出的任务调度方案的优越性。但是由于作业之间的差异，图8和图9中每个虚拟机中已完成作业的数量不能完全反映每个作业中的操作，因此我们列出了这些操作的数值分析结果，并且使用方差作为指标来衡量每个虚拟机的制造时间并估计AWT是否平衡。数值结果示于表IV。如表IV所示，与其他算法相比，该方案同时获得了最小的makepan和AWT方差，分别达到0.98和0.35。
+
+![10](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/10.png)
+
+![11](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/11.png)
+
+> B. Large-scale cloud platform
+>
+> We equip the large-scale data center with 500 physical machines, and the number of user jobs is 1000. The other configuration parameters are similar to Table III. In this section, because of the large number of VMs and jobs, we only give the comparison results of percentage of user jobs finished on time among various scheduling schemes, as shown in Fig. 10.
+>
+> Guided by the observation Fig. 10, we find that the proposed job scheduling scheme achieved the maximum job completion rate compared with the other job scheduling schemes.
+
+B.大型云平台
+
+我们为大型数据中心配备了500台物理机，并且用户作业数为1000。其他配置参数与表III相似。在本节中，由于虚拟机和作业数量众多，我们只给出各种调度方案中按时完成的用户作业百分比的比较结果，如图10所示。
+
+通过观察图10可以发现，与其他作业调度方案相比，所提出的作业调度方案实现了最大的作业完成率。
+
+![12](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/12.png)
+
+> 5.3 Real cloud computing environment experiments results by using private cloud
+>
+> We construct our real cloud computing platform by using six physical machines. (The six machines are as follows: Lenovo ThinkServer RD630 E52609, IBM R33026 7946 and IBM RH2288A V2, 2set per one) The bandwidth of the network connecting physical machine is 1 Gb. VMs configuration resembles Amazon EC2 image. Configuration details of three different types of VMs (small, medium and large) are given in Table V. Similar to [30], we generate user jobs staging rate based on Gamma distribution with mean = 0.68 Gbps and Coefficient of Variation (CV) equals to 0.1.
+
+5.3使用私有云的真实云计算环境实验结果
+
+我们使用六台物理机构建了真正的云计算平台。（六台机器如下：Lenovo ThinkServer RD630 E52609，IBM R33026 7946和IBM RH2288A V2，每台2set）连接物理机的网络带宽为1 Gb。VM的配置类似于Amazon EC2映像。表V中给出了三种不同类型的VM（小型，中型和大型）的配置详细信息。类似于[30]，我们基于均值= 0.68 Gbps且变异系数（CV）等于0.1的Gamma分布生成用户作业升级率。
+
+![13](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/13.png)
+
+> In this section, we first give the experience comparison results of makespan and AWT among various job scheduling schemes by using private cloud, as shown in Fig.11. Then we give the experience comparison results of percentage of user jobs finished on time among various scheduling schemes by using private cloud, as shown in Fig.12.
+>
+> From the experience results as shown in Fig.11, the proposed scheme balances the performance index of makespan and AWT, which common conflict with each other, then as far as possible improve the finished job number, as shown in Fig.12. By the way, our private cloud is only constructed by a limited set of physical machines, but it can be applied to any larger set of machines.
+
+在本节中，我们首先给出使用私有云在各种作业调度方案中的makepan和AWT的经验比较结果，如图11所示。然后我们给出使用私有云在各种调度方案中按时完成的用户作业百分比的经验比较结果，如图12所示。
+
+根据图11所示的经验结果，所提出的方案平衡了通用的makepan和AWT的性能指标，然后尽可能地提高了完成的工作数量，如图12所示。顺便说一下，我们的私有云仅由一组有限的物理机器构成，但可以应用于任何更大的机器集合。
+
+![14](resource/A-Reinforcement-Learning-based-Mixed-Job-Scheduler-Scheme-for-Grid-or-IaaS-Cloud/14.png)
+
+## VI. CONCLUSIONS AND FUTURE WORK
+
+> In this study, we provide an insightful view about the job scheduling optimization for cloud computing platform. In light of the proposed system model, we theoretically analyze the execution process of jobs in cloud computing environment and design a novel job scheduling scheme using reinforcement learning to optimize the makespan and AWT under given VM resources. We evaluate the proposed job scheduling optimization schemes in extensive simulations. Guided by the empirical observation, we find that the proposed job scheduling scheme can optimally utilize cloud resources and load balancing to obtain the minimal makespan with resource constraint. 
+>
+> In the future, we plan to extend our scheme and improve the proposed scheme in dividing state space and user jobs, knowledge multiplexing between multi-agent, etc. Looking into the cloud entities and considering the details of cloud computing platform, such as VMs failures, VMs migration, costs of communication, burst arrivals of requests, and VMs cluster for different kinds of requests will be other dimensions of extension.
+
+在这项研究中，我们提供了有关云计算平台的作业调度优化的深刻见解。根据提出的系统模型，我们从理论上分析了云计算环境中作业的执行过程，并设计了一种新的作业调度方案，该方案采用强化学习来优化给定VM资源下的制造时间和AWT。我们在广泛的仿真中评估提出的作业调度优化方案。在经验观察的指导下，我们发现提出的作业调度方案可以最佳地利用云资源和负载平衡来获得具有资源约束的最小有效期。
+
+将来，我们计划在划分状态空间和用户作业，多智能体之间的知识复用等方面扩展方案并改进提议的方案。研究云实体并考虑云计算平台的详细信息，例如虚拟机故障，VM迁移，通信成本，请求突发到达以及针对不同类型请求的VM群集将是扩展的其他方面。
